@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppStore } from "./store";
-import Dashboard from "./components/Dashboard";
-import ReceiptPrint from "./components/ReceiptPrint";
+import Dashboard from "./components/Dashboard.tsx";
+import ReceiptPrint from "./components/ReceiptPrint.tsx";
 import "./App.css";
 
 function App() {

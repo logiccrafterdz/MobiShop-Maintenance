@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import Sidebar from './Sidebar';
-import NewRepairForm from './NewRepairForm';
-import RepairsList from './RepairsList';
+import Sidebar from './Sidebar.tsx';
+import NewRepairForm from './NewRepairForm.tsx';
+import RepairsList from './RepairsList.tsx';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useAppStore } from '../store';
 
