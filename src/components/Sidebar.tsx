@@ -54,7 +54,7 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <div className="p-4 border-t border-slate-200 dark:border-slate-700">
+      <div className="p-4 border-t border-slate-200 dark:border-slate-700 space-y-2">
         <button
           onClick={toggleLanguage}
           className="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-200"
@@ -62,6 +62,9 @@ export default function Sidebar() {
           <Languages size={20} />
           <span className="font-medium">{language === 'en' ? 'العربية' : 'English'}</span>
         </button>
+        <div className="text-[10px] text-center text-slate-400 font-bold tracking-widest pt-2">
+          DEVELOPED BY LOGICCRAFTERDZ
+        </div>
       </div>
     </aside>
   );

@@ -62,4 +62,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-Developed with ❤️ for MobiShop.
+DEVELOPED BY LOGICCRAFTERDZ
