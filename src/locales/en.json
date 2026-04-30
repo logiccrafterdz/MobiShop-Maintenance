@@ -23,6 +23,8 @@
     "customerName": "Customer Name",
     "phone": "Phone / WhatsApp",
     "deviceType": "Device Type",
+    "brand": "Brand",
+    "other": "Other",
     "model": "Device Model",
     "issue": "Issue Description",
     "deposit": "Deposit Paid",

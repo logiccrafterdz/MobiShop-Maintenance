@@ -39,7 +39,7 @@ export default function Sidebar() {
           </div>
           <div>
             <p className="text-sm text-slate-500 dark:text-slate-400">{t('dashboard.revenue')}</p>
-            <p className="text-xl font-bold">${stats.revenue.toFixed(2)}</p>
+            <p className="text-xl font-bold">{stats.revenue.toFixed(2)} DZD</p>
           </div>
         </div>
 
@@ -49,7 +49,7 @@ export default function Sidebar() {
           </div>
           <div>
             <p className="text-sm text-slate-500 dark:text-slate-400">{t('dashboard.netProfit')}</p>
-            <p className="text-xl font-bold">${stats.net_profit.toFixed(2)}</p>
+            <p className="text-xl font-bold">{stats.net_profit.toFixed(2)} DZD</p>
           </div>
         </div>
       </div>

@@ -88,8 +88,8 @@ export default function RepairsList() {
                        t('table.statusDelivered')}
                     </span>
                   </td>
-                  <td className="p-4">${repair.deposit_paid.toFixed(2)}</td>
-                  <td className="p-4">${repair.est_cost.toFixed(2)}</td>
+                  <td className="p-4">{repair.deposit_paid.toFixed(2)} DZD</td>
+                  <td className="p-4">{repair.est_cost.toFixed(2)} DZD</td>
                   <td className="p-4">
                     <div className="flex items-center justify-center gap-2">
                       {repair.status !== 'Delivered' && (

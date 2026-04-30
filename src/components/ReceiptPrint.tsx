@@ -42,15 +42,15 @@ export default function ReceiptPrint() {
       <div className="border-t border-dashed border-black py-2 mb-4">
         <div className="flex justify-between">
           <span>Est. Cost:</span>
-          <span className="font-bold">${printingRepair.est_cost.toFixed(2)}</span>
+          <span className="font-bold">{printingRepair.est_cost.toFixed(2)} DZD</span>
         </div>
         <div className="flex justify-between">
           <span>Deposit:</span>
-          <span className="font-bold">${printingRepair.deposit_paid.toFixed(2)}</span>
+          <span className="font-bold">{printingRepair.deposit_paid.toFixed(2)} DZD</span>
         </div>
         <div className="flex justify-between mt-1 pt-1 border-t border-black">
           <span>Remaining:</span>
-          <span className="font-bold">${Math.max(0, printingRepair.est_cost - printingRepair.deposit_paid).toFixed(2)}</span>
+          <span className="font-bold">{Math.max(0, printingRepair.est_cost - printingRepair.deposit_paid).toFixed(2)} DZD</span>
         </div>
       </div>
 

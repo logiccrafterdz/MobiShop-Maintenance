@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,6 +10,8 @@ const schema = z.object({
   customerName: z.string().min(1, 'Required'),
   customerPhone: z.string().min(1, 'Required'),
   deviceType: z.string().min(1, 'Required'),
+  brand: z.string().min(1, 'Required'),
+  customBrand: z.string().optional(),
   deviceModel: z.string().min(1, 'Required'),
   issueDesc: z.string().min(1, 'Required'),
   depositPaid: z.number().min(0),
@@ -18,26 +21,44 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
+const BRANDS = {
+  Phone: ['Apple', 'Samsung', 'Xiaomi', 'Oppo', 'Realme', 'Vivo', 'Huawei', 'Honor', 'Google Pixel', 'OnePlus'],
+  Laptop: ['HP', 'Dell', 'Lenovo', 'Asus', 'Acer', 'Apple', 'MSI', 'Microsoft Surface'],
+  Tablet: ['Apple (iPad)', 'Samsung', 'Lenovo', 'Huawei', 'Xiaomi'],
+};
+
 export default function NewRepairForm() {
   const { t } = useTranslation();
   const { fetchRepairs, fetchStats } = useAppStore();
   
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
+  const { register, handleSubmit, watch, formState: { errors }, reset, setValue } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
       deviceType: 'Phone',
       depositPaid: 0,
       estCost: 0,
+      brand: 'Samsung',
     }
   });
 
+  const selectedType = watch('deviceType') as keyof typeof BRANDS;
+  const selectedBrand = watch('brand');
+
+  useEffect(() => {
+    const firstBrand = BRANDS[selectedType]?.[0] || 'Other';
+    setValue('brand', firstBrand);
+  }, [selectedType, setValue]);
+
   const onSubmit = async (data: FormData) => {
     try {
+      const finalBrand = data.brand === 'Other' ? data.customBrand : data.brand;
+      const fullModel = `${finalBrand} ${data.deviceModel}`;
+
       const repairId = await invoke<string>('add_repair', {
         customerName: data.customerName,
         customerPhone: data.customerPhone,
         deviceType: data.deviceType,
-        deviceModel: data.deviceModel,
+        deviceModel: fullModel,
         issueDesc: data.issueDesc,
         depositPaid: data.depositPaid,
         estCost: data.estCost,
@@ -49,7 +70,6 @@ export default function NewRepairForm() {
       await fetchRepairs();
       await fetchStats();
       
-      // Get the newly created repair from store to print it
       const newRepair = useAppStore.getState().repairs.find(r => r.repair_id === repairId);
       if (newRepair) {
         useAppStore.getState().setPrintingRepair(newRepair);
@@ -78,6 +98,24 @@ export default function NewRepairForm() {
           <option value="Tablet">Tablet</option>
         </select>
       </div>
+
+      <div className="space-y-1">
+        <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.brand')}</label>
+        <select {...register('brand')} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900">
+          {(BRANDS[selectedType] || []).map(b => (
+            <option key={b} value={b}>{b}</option>
+          ))}
+          <option value="Other">{t('form.other')}</option>
+        </select>
+      </div>
+
+      {selectedBrand === 'Other' && (
+        <div className="space-y-1">
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.other')} ({t('form.brand')})</label>
+          <input {...register('customBrand')} type="text" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
+        </div>
+      )}
+
       <div className="space-y-1">
         <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.model')}</label>
         <input {...register('deviceModel')} type="text" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
