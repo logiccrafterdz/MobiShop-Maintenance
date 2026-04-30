@@ -22,7 +22,11 @@ export default function Dashboard() {
       <Sidebar />
       <main className="flex-1 flex flex-col p-4 space-y-4 overflow-hidden">
         {/* Top Collapsible Form */}
-        <section className={`transition-all duration-300 ease-in-out flex flex-col bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 ${isFormOpen ? 'h-[40%]' : 'h-14'}`}>
+        <section className={`transition-all duration-300 ease-in-out flex flex-col bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 ${
+          isFormOpen 
+            ? (isListOpen ? 'h-[45%]' : 'flex-1') 
+            : 'h-14'
+        }`}>
           <div 
             className="flex items-center justify-between p-4 cursor-pointer select-none"
             onClick={() => setIsFormOpen(!isFormOpen)}
