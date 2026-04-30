@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppStore } from "./store";
 import Dashboard from "./components/Dashboard";
+import ReceiptPrint from "./components/ReceiptPrint";
 import "./App.css";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans">
       <Dashboard />
+      <ReceiptPrint />
     </div>
   );
 }

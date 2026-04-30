@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Search, Edit, Trash2, CheckCircle } from 'lucide-react';
+import { Search, Trash2, CheckCircle } from 'lucide-react';
 import { useAppStore, Repair } from '../store';
 import { useState } from 'react';
 

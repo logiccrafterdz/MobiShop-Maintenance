@@ -44,10 +44,16 @@ export default function NewRepairForm() {
         notes: data.notes || null,
       });
       console.log('Created repair:', repairId);
-      // Trigger print here eventually
+      
       reset();
-      fetchRepairs();
-      fetchStats();
+      await fetchRepairs();
+      await fetchStats();
+      
+      // Get the newly created repair from store to print it
+      const newRepair = useAppStore.getState().repairs.find(r => r.repair_id === repairId);
+      if (newRepair) {
+        useAppStore.getState().setPrintingRepair(newRepair);
+      }
     } catch (e) {
       console.error('Failed to add repair:', e);
     }

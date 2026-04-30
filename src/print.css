@@ -1,0 +1,27 @@
+@media print {
+  @page {
+    margin: 0;
+    size: 80mm auto; /* 80mm thermal paper */
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .print-only, .print-only * {
+    visibility: visible;
+  }
+
+  .print-only {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80mm;
+  }
+}
+
+@media screen {
+  .print-only {
+    display: none;
+  }
+}

@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store';
-import { LayoutDashboard, Settings, Languages, TrendingUp, TrendingDown, DollarSign, PenTool } from 'lucide-react';
+import { LayoutDashboard, Languages, TrendingUp, DollarSign, PenTool } from 'lucide-react';
 
 export default function Sidebar() {
   const { t } = useTranslation();

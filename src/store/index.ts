@@ -31,6 +31,8 @@ interface AppState {
   setLanguage: (lang: 'en' | 'ar') => void;
   repairs: Repair[];
   stats: DashboardStats;
+  printingRepair: Repair | null;
+  setPrintingRepair: (repair: Repair | null) => void;
   fetchRepairs: () => Promise<void>;
   fetchStats: () => Promise<void>;
   updateRepairStatus: (id: number, status: string, actual_cost?: number) => Promise<void>;
@@ -45,6 +47,8 @@ export const useAppStore = create<AppState>((set) => ({
     document.documentElement.lang = lang;
   },
   repairs: [],
+  printingRepair: null,
+  setPrintingRepair: (repair) => set({ printingRepair: repair }),
   stats: {
     total_repairs_today: 0,
     total_repairs_month: 0,
