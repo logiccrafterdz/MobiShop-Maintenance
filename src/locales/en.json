@@ -1,0 +1,48 @@
+{
+  "common": {
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "search": "Search...",
+    "status": "Status",
+    "date": "Date"
+  },
+  "dashboard": {
+    "title": "MobiShop Maintenance",
+    "newRepair": "New Repair Form",
+    "records": "Repairs List",
+    "stats": "Statistics",
+    "totalToday": "Today's Repairs",
+    "totalMonth": "Month's Repairs",
+    "revenue": "Total Revenue",
+    "netProfit": "Net Profit",
+    "weeklyRevenue": "Weekly Revenue"
+  },
+  "form": {
+    "customerName": "Customer Name",
+    "phone": "Phone / WhatsApp",
+    "deviceType": "Device Type",
+    "model": "Device Model",
+    "issue": "Issue Description",
+    "deposit": "Deposit Paid",
+    "estCost": "Estimated Cost",
+    "notes": "Notes",
+    "savePrint": "Save & Print Receipt"
+  },
+  "table": {
+    "id": "Repair ID",
+    "customer": "Customer",
+    "device": "Device",
+    "issue": "Issue",
+    "deposit": "Deposit",
+    "estCost": "Est. Cost",
+    "profit": "Profit",
+    "actions": "Actions",
+    "markDelivered": "Mark Delivered",
+    "statusPending": "Pending",
+    "statusInProgress": "In Progress",
+    "statusReady": "Ready",
+    "statusDelivered": "Delivered"
+  }
+}

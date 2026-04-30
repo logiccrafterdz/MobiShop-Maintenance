@@ -1,0 +1,48 @@
+{
+  "common": {
+    "save": "حفظ",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "cancel": "إلغاء",
+    "search": "بحث...",
+    "status": "الحالة",
+    "date": "التاريخ"
+  },
+  "dashboard": {
+    "title": "صيانة موبي شوب",
+    "newRepair": "نموذج إصلاح جديد",
+    "records": "سجل الإصلاحات",
+    "stats": "الإحصائيات",
+    "totalToday": "إصلاحات اليوم",
+    "totalMonth": "إصلاحات الشهر",
+    "revenue": "إجمالي الإيرادات",
+    "netProfit": "صافي الربح",
+    "weeklyRevenue": "الإيرادات الأسبوعية"
+  },
+  "form": {
+    "customerName": "اسم العميل",
+    "phone": "الهاتف / واتساب",
+    "deviceType": "نوع الجهاز",
+    "model": "موديل الجهاز",
+    "issue": "وصف المشكلة",
+    "deposit": "العربون المدفوع",
+    "estCost": "التكلفة التقديرية",
+    "notes": "ملاحظات",
+    "savePrint": "حفظ وطباعة الإيصال"
+  },
+  "table": {
+    "id": "معرف الإصلاح",
+    "customer": "العميل",
+    "device": "الجهاز",
+    "issue": "المشكلة",
+    "deposit": "العربون",
+    "estCost": "التكلفة التقديرية",
+    "profit": "الربح",
+    "actions": "إجراءات",
+    "markDelivered": "تحديد كمُسلَّم",
+    "statusPending": "قيد الانتظار",
+    "statusInProgress": "جاري الإصلاح",
+    "statusReady": "جاهز",
+    "statusDelivered": "مُسلَّم"
+  }
+}
