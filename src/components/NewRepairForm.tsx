@@ -1,48 +1,98 @@
 import { useTranslation } from 'react-i18next';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { invoke } from '@tauri-apps/api/core';
+import { useAppStore } from '../store';
+
+const schema = z.object({
+  customerName: z.string().min(1, 'Required'),
+  customerPhone: z.string().min(1, 'Required'),
+  deviceType: z.string().min(1, 'Required'),
+  deviceModel: z.string().min(1, 'Required'),
+  issueDesc: z.string().min(1, 'Required'),
+  depositPaid: z.number().min(0),
+  estCost: z.number().min(0),
+  notes: z.string().optional(),
+});
+
+type FormData = z.infer<typeof schema>;
 
 export default function NewRepairForm() {
   const { t } = useTranslation();
+  const { fetchRepairs, fetchStats } = useAppStore();
+  
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      deviceType: 'Phone',
+      depositPaid: 0,
+      estCost: 0,
+    }
+  });
+
+  const onSubmit = async (data: FormData) => {
+    try {
+      const repairId = await invoke<string>('add_repair', {
+        customerName: data.customerName,
+        customerPhone: data.customerPhone,
+        deviceType: data.deviceType,
+        deviceModel: data.deviceModel,
+        issueDesc: data.issueDesc,
+        depositPaid: data.depositPaid,
+        estCost: data.estCost,
+        notes: data.notes || null,
+      });
+      console.log('Created repair:', repairId);
+      // Trigger print here eventually
+      reset();
+      fetchRepairs();
+      fetchStats();
+    } catch (e) {
+      console.error('Failed to add repair:', e);
+    }
+  };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      {/* Form fields will go here */}
+    <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div className="space-y-1">
         <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.customerName')}</label>
-        <input type="text" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
+        <input {...register('customerName')} type="text" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
+        {errors.customerName && <p className="text-xs text-red-500">{errors.customerName.message}</p>}
       </div>
       <div className="space-y-1">
         <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.phone')}</label>
-        <input type="text" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
+        <input {...register('customerPhone')} type="text" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
       </div>
       <div className="space-y-1">
         <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.deviceType')}</label>
-        <select className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900">
-          <option>Phone</option>
-          <option>Laptop</option>
-          <option>Tablet</option>
+        <select {...register('deviceType')} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900">
+          <option value="Phone">Phone</option>
+          <option value="Laptop">Laptop</option>
+          <option value="Tablet">Tablet</option>
         </select>
       </div>
       <div className="space-y-1">
         <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.model')}</label>
-        <input type="text" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
+        <input {...register('deviceModel')} type="text" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
       </div>
       <div className="space-y-1 lg:col-span-2">
         <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.issue')}</label>
-        <textarea rows={2} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 resize-none" />
+        <textarea {...register('issueDesc')} rows={2} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 resize-none" />
       </div>
       <div className="space-y-1">
         <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.deposit')}</label>
-        <input type="number" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
+        <input {...register('depositPaid', { valueAsNumber: true })} type="number" step="0.01" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
       </div>
       <div className="space-y-1">
         <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.estCost')}</label>
-        <input type="number" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
+        <input {...register('estCost', { valueAsNumber: true })} type="number" step="0.01" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
       </div>
       <div className="lg:col-span-4 flex justify-end mt-2">
-        <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-colors shadow-sm">
+        <button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-colors shadow-sm">
           {t('form.savePrint')}
         </button>
       </div>
-    </div>
+    </form>
   );
 }

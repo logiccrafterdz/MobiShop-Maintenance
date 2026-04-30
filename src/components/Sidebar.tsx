@@ -4,7 +4,7 @@ import { LayoutDashboard, Settings, Languages, TrendingUp, TrendingDown, DollarS
 
 export default function Sidebar() {
   const { t } = useTranslation();
-  const { language, setLanguage } = useAppStore();
+  const { language, setLanguage, stats } = useAppStore();
 
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'ar' : 'en');
@@ -22,14 +22,14 @@ export default function Sidebar() {
       <div className="p-4 flex-1 space-y-4 overflow-y-auto">
         <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">{t('dashboard.stats')}</h2>
         
-        {/* Stat Cards - These will be connected to backend later */}
+        {/* Stat Cards Connected to Backend */}
         <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center gap-4">
           <div className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 p-3 rounded-lg">
             <LayoutDashboard size={20} />
           </div>
           <div>
             <p className="text-sm text-slate-500 dark:text-slate-400">{t('dashboard.totalToday')}</p>
-            <p className="text-xl font-bold">0</p>
+            <p className="text-xl font-bold">{stats.total_repairs_today}</p>
           </div>
         </div>
 
@@ -39,7 +39,7 @@ export default function Sidebar() {
           </div>
           <div>
             <p className="text-sm text-slate-500 dark:text-slate-400">{t('dashboard.revenue')}</p>
-            <p className="text-xl font-bold">$0.00</p>
+            <p className="text-xl font-bold">${stats.revenue.toFixed(2)}</p>
           </div>
         </div>
 
@@ -49,7 +49,7 @@ export default function Sidebar() {
           </div>
           <div>
             <p className="text-sm text-slate-500 dark:text-slate-400">{t('dashboard.netProfit')}</p>
-            <p className="text-xl font-bold">$0.00</p>
+            <p className="text-xl font-bold">${stats.net_profit.toFixed(2)}</p>
           </div>
         </div>
       </div>

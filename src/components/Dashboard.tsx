@@ -1,13 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Sidebar from './Sidebar';
 import NewRepairForm from './NewRepairForm';
 import RepairsList from './RepairsList';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useAppStore } from '../store';
 
 export default function Dashboard() {
   const { t } = useTranslation();
   const [isFormOpen, setIsFormOpen] = useState(true);
+  const { fetchRepairs, fetchStats } = useAppStore();
+
+  useEffect(() => {
+    fetchRepairs();
+    fetchStats();
+  }, [fetchRepairs, fetchStats]);
 
   return (
     <div className="flex h-screen overflow-hidden bg-slate-50 dark:bg-slate-900">
