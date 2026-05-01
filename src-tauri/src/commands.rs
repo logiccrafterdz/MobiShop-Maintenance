@@ -160,7 +160,7 @@ pub fn get_dashboard_stats(state: State<DbState>) -> Result<DashboardStats, Stri
 #[tauri::command]
 pub async fn list_printers() -> Result<Vec<String>, String> {
     // Run the blocking printer enumeration in a separate thread so it doesn't freeze the UI
-    tokio::task::spawn_blocking(|| {
+    tauri::async_runtime::spawn_blocking(|| {
         use printers::get_printers;
         get_printers()
             .into_iter()
