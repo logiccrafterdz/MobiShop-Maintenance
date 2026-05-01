@@ -72,8 +72,8 @@ pub fn get_repairs(state: State<DbState>) -> Result<Vec<Repair>, String> {
             updated_at: row.get(13)?,
         })
     }).map_err(|e| e.to_string())?
-    .filter_map(Result::ok)
-    .collect();
+    .collect::<Result<Vec<_>, _>>()
+    .map_err(|e| e.to_string())?;
 
     Ok(repairs)
 }
@@ -133,19 +133,27 @@ pub fn get_dashboard_stats(state: State<DbState>) -> Result<DashboardStats, Stri
     ).unwrap_or(0.0);
 
     let revenue_delivered: f64 = conn.query_row(
-        "SELECT COALESCE(SUM(MAX(est_cost, actual_cost)), 0) FROM repairs WHERE status = 'Delivered'",
+        "SELECT COALESCE(SUM(CASE WHEN actual_cost > est_cost THEN actual_cost ELSE est_cost END), 0) FROM repairs WHERE status = 'Delivered'",
+        [],
+        |row| row.get(0)
+    ).unwrap_or(0.0);
+
+    let total_deposits: f64 = conn.query_row(
+        "SELECT COALESCE(SUM(deposit_paid), 0) FROM repairs WHERE status = 'Delivered'",
         [],
         |row| row.get(0)
     ).unwrap_or(0.0);
 
     let total_revenue = revenue_deposits + revenue_delivered;
+    let costs = total_deposits; // Deposits already collected from delivered items
+    let net_profit = revenue_delivered - costs; // Remaining balance from delivered repairs
 
     Ok(DashboardStats {
         total_repairs_today: total_today,
         total_repairs_month: total_month,
         revenue: total_revenue,
-        costs: 0.0,
-        net_profit: total_revenue,
+        costs,
+        net_profit: total_revenue, // For now, show total as profit (no cost tracking yet)
     })
 }
 
