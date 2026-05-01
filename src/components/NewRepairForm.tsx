@@ -125,17 +125,16 @@ export default function NewRepairForm() {
         <div className="space-y-4">
           <SectionHeader icon={<Smartphone size={18} />} title={t('form.deviceInfo')} />
           
-          {/* Type Selector */}
-          <div className="flex gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl">
+          <div className="flex gap-2 p-1.5 bg-slate-100/80 dark:bg-slate-800/80 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
             {Object.keys(BRANDS).map((type) => (
               <button
                 key={type}
                 type="button"
                 onClick={() => setFormData({...formData, device_type: type, device_brand: BRANDS[type as keyof typeof BRANDS][0]})}
-                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-black transition-all ${
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-black transition-all duration-300 ${
                   formData.device_type === type 
-                  ? 'bg-white dark:bg-slate-700 shadow-sm text-primary' 
-                  : 'text-slate-500 hover:text-slate-700'
+                  ? 'bg-white dark:bg-slate-700 shadow-sm text-primary ring-1 ring-slate-200/50 dark:ring-slate-600' 
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-white/50 dark:hover:bg-slate-700/50'
                 }`}
               >
                 {getIconForType(type)}
@@ -221,16 +220,16 @@ export default function NewRepairForm() {
         </div>
       </div>
 
-      <div className="p-8 bg-slate-50/50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800">
+      <div className="p-8 bg-slate-50/50 dark:bg-slate-900/50 border-t border-slate-200/50 dark:border-slate-800/60 mt-auto">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-primary text-white py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 flex items-center justify-center gap-3 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-gradient-to-r from-primary to-teal-500 text-white py-4 rounded-xl font-black text-sm uppercase tracking-[0.2em] hover:opacity-90 transition-all shadow-xl shadow-primary/25 flex items-center justify-center gap-3 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed group"
         >
           {isSubmitting ? (
-            <span className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></span>
+            <span className="animate-spin w-5 h-5 border-2 border-white/50 border-t-white rounded-full"></span>
           ) : (
-            <Plus size={20} />
+            <Plus size={20} className="group-hover:rotate-90 transition-transform duration-300" />
           )}
           {t('form.submit')}
         </button>

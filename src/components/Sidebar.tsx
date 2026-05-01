@@ -11,19 +11,25 @@ export default function Sidebar() {
   const { stats } = useAppStore();
 
   return (
-    <aside className="w-72 bg-white dark:bg-slate-900 border-e border-slate-200/60 dark:border-slate-800/60 flex flex-col shadow-sm z-50">
+    <aside className="w-[280px] bg-white dark:bg-slate-900 border-e border-slate-200/50 dark:border-slate-800/60 flex flex-col z-50">
       {/* Brand Section */}
       <div className="p-8 pb-10">
         <div className="flex flex-col items-center text-center group">
-          <div className="relative mb-4">
-            <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full group-hover:bg-primary/30 transition-all duration-700 scale-150"></div>
-            <img src="/logo.png" alt="MobiShop" className="w-24 h-24 relative z-10 drop-shadow-xl group-hover:scale-105 transition-transform duration-500" />
+          <div className="relative mb-6">
+            <div className="absolute inset-0 bg-primary/10 blur-3xl rounded-full group-hover:bg-primary/20 transition-all duration-700 scale-[2]"></div>
+            <div className="relative z-10 p-2 bg-white dark:bg-slate-800 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700 group-hover:scale-105 transition-transform duration-500">
+               <img src="/logo.png" alt="MobiShop" className="w-20 h-20 mix-blend-multiply dark:mix-blend-normal object-contain" />
+            </div>
           </div>
           <div className="space-y-1">
-            <h1 className="font-black text-3xl tracking-tighter text-slate-800 dark:text-white leading-none">
+            <h1 className="font-black text-[1.75rem] tracking-tighter text-slate-800 dark:text-white leading-none flex items-center justify-center">
               MOBI<span className="text-primary">SHOP</span>
             </h1>
-            <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 tracking-[0.3em] uppercase mt-1">Maintenance Pro</p>
+            <div className="flex items-center justify-center gap-2 mt-2">
+              <div className="h-px w-4 bg-secondary/50 rounded-full"></div>
+              <p className="text-[9px] font-black text-slate-500 dark:text-slate-400 tracking-[0.4em] uppercase">Maintenance Pro</p>
+              <div className="h-px w-4 bg-secondary/50 rounded-full"></div>
+            </div>
           </div>
         </div>
       </div>

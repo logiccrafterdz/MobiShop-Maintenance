@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { invoke } from '@tauri-apps/api/core';
-import { getPrinters } from 'tauri-plugin-printer-v2';
 
 export interface Repair {
   id: number;
@@ -61,20 +60,13 @@ export const useAppStore = create<AppState>((set, get) => ({
   settings: {},
   fetchPrinters: async () => {
     try {
-      const response = await getPrinters();
-      // BUG-04 FIX: Handle both string and object responses
-      const data = typeof response === 'string' ? JSON.parse(response) : response;
-      const names = Array.isArray(data) ? data.map((p: any) => p.name || p) : [];
+      // Use our custom async Rust command instead of the buggy plugin function
+      // The plugin function blocks the main thread and causes UI freezes on Windows
+      const names = await invoke<string[]>('list_printers');
       set({ printers: names });
     } catch (e) {
       console.error('Failed to fetch printers:', e);
-      // Fallback: Try the Rust command
-      try {
-        const names = await invoke<string[]>('list_printers');
-        set({ printers: names });
-      } catch (e2) {
-        console.error('Fallback list_printers also failed:', e2);
-      }
+      set({ printers: [] });
     }
   },
   fetchSettings: async () => {

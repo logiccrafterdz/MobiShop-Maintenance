@@ -153,17 +153,22 @@ pub fn get_dashboard_stats(state: State<DbState>) -> Result<DashboardStats, Stri
         total_repairs_month: total_month,
         revenue: total_revenue,
         costs,
-        net_profit: total_revenue, // For now, show total as profit (no cost tracking yet)
+        net_profit, // FIXED: Using the calculated net_profit variable
     })
 }
 
 #[tauri::command]
-pub fn list_printers() -> Vec<String> {
-    use printers::get_printers;
-    get_printers()
-        .into_iter()
-        .map(|p| p.name)
-        .collect()
+pub async fn list_printers() -> Result<Vec<String>, String> {
+    // Run the blocking printer enumeration in a separate thread so it doesn't freeze the UI
+    tokio::task::spawn_blocking(|| {
+        use printers::get_printers;
+        get_printers()
+            .into_iter()
+            .map(|p| p.name)
+            .collect()
+    })
+    .await
+    .map_err(|e| e.to_string())
 }
 
 #[tauri::command]

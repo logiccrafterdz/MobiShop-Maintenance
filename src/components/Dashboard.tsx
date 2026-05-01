@@ -83,7 +83,7 @@ export default function Dashboard() {
             </button>
           </div>
           
-          <div className="flex-1 bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-sm border border-slate-200/60 dark:border-slate-800/60 overflow-hidden flex flex-col">
+          <div className="flex-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl shadow-sm border border-slate-200/50 dark:border-slate-800/60 overflow-hidden flex flex-col">
             <NewRepairForm />
           </div>
         </section>
@@ -93,9 +93,9 @@ export default function Dashboard() {
           !isListOpen ? 'hidden' : 'block animate-slide-up'
         }`}>
           <div className="flex items-center justify-between mb-4 px-2">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-8 bg-secondary rounded-full"></div>
-              <h2 className="text-xl font-black tracking-tight uppercase text-slate-800 dark:text-white">
+            <div className="flex items-center gap-3">
+              <div className="w-1.5 h-6 bg-secondary rounded-full shadow-[0_0_10px_rgba(var(--secondary),0.5)]"></div>
+              <h2 className="text-lg font-black tracking-tight uppercase text-slate-800 dark:text-white">
                 {t('dashboard.repairsList')}
               </h2>
             </div>
@@ -103,7 +103,7 @@ export default function Dashboard() {
                {!isFormOpen && (
                  <button 
                     onClick={() => setIsFormOpen(true)}
-                    className="flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                    className="flex items-center gap-2 bg-gradient-to-r from-primary to-teal-500 text-white px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:opacity-90 transition-all shadow-lg shadow-primary/20"
                  >
                    <PlusCircle size={16} />
                    {t('dashboard.newRepair')}
@@ -111,14 +111,14 @@ export default function Dashboard() {
                )}
                <button 
                 onClick={() => setIsFormOpen(!isFormOpen)}
-                className="p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full text-slate-500 hover:text-primary transition-all shadow-sm hover:shadow-md"
+                className="p-3 bg-white dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700 rounded-full text-slate-500 hover:text-primary transition-all shadow-sm hover:shadow-md"
               >
                 {isFormOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
               </button>
             </div>
           </div>
 
-          <div className="flex-1 bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-sm border border-slate-200/60 dark:border-slate-800/60 overflow-hidden">
+          <div className="flex-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl shadow-sm border border-slate-200/50 dark:border-slate-800/60 overflow-hidden flex flex-col">
             <RepairsList />
           </div>
         </section>

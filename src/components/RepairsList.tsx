@@ -100,14 +100,14 @@ export default function RepairsList() {
       {/* Repairs Table */}
       <div className="flex-1 overflow-auto custom-scrollbar">
         <table className="w-full text-start border-collapse">
-          <thead className="sticky top-0 bg-slate-50 dark:bg-slate-800/80 backdrop-blur-md z-10">
+          <thead className="sticky top-0 bg-slate-50/90 dark:bg-slate-800/90 backdrop-blur-md z-10 shadow-sm">
             <tr>
-              <th className="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-start">{t('status.repairId')}</th>
-              <th className="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-start">{t('form.customerInfo')}</th>
-              <th className="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-start">{t('form.deviceInfo')}</th>
-              <th className="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-start">{t('common.status')}</th>
-              <th className="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-start">{t('common.date')}</th>
-              <th className="px-6 py-4 text-end"></th>
+              <th className="px-6 py-5 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest text-start">{t('status.repairId')}</th>
+              <th className="px-6 py-5 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest text-start">{t('form.customerInfo')}</th>
+              <th className="px-6 py-5 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest text-start">{t('form.deviceInfo')}</th>
+              <th className="px-6 py-5 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest text-start">{t('common.status')}</th>
+              <th className="px-6 py-5 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest text-start">{t('common.date')}</th>
+              <th className="px-6 py-5 text-end"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 dark:divide-slate-800">

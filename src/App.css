@@ -35,15 +35,15 @@
 
 @layer base {
   :root {
-    /* ACTUAL LOGO COLORS */
-    --primary: 174 100% 29%; /* Darker Teal from Logo */
-    --primary-foreground: 174 100% 98%;
+    /* ACTUAL LOGO COLORS - Refined for better contrast and vibrancy */
+    --primary: 176 100% 32%; /* Vibrant Teal from Logo */
+    --primary-foreground: 0 0% 100%;
     
-    --secondary: 47 90% 55%; /* Golden Yellow from Logo */
-    --secondary-foreground: 47 100% 10%;
+    --secondary: 45 93% 47%; /* Golden Yellow from Logo */
+    --secondary-foreground: 222 47% 11%;
 
-    --background: 210 20% 98%;
-    --foreground: 222 47% 11%;
+    --background: 210 33% 98%; /* Very light, cool gray */
+    --foreground: 222 47% 11%; /* Deep slate/navy for text */
 
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
@@ -54,15 +54,15 @@
     --muted: 210 20% 94%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 174 100% 29%;
-    --accent-foreground: 174 100% 98%;
+    --accent: 176 100% 32%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 174 100% 29%;
+    --ring: 176 100% 32%;
 
     --radius: 1rem;
   }
