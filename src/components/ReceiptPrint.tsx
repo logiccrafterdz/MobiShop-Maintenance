@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store';
 import { format } from 'date-fns';
@@ -7,10 +7,12 @@ import { printHtml } from 'tauri-plugin-printer-v2';
 export default function ReceiptPrint() {
   const { t } = useTranslation();
   const { printingRepair, setPrintingRepair, settings } = useAppStore();
+  const isPrintingRef = useRef(false);
 
   useEffect(() => {
     const handlePrint = async () => {
-      if (printingRepair) {
+      if (printingRepair && !isPrintingRef.current) {
+        isPrintingRef.current = true;
         await new Promise(resolve => setTimeout(resolve, 500));
 
         const receiptHtml = document.getElementById('receipt-content')?.outerHTML;
@@ -74,6 +76,10 @@ export default function ReceiptPrint() {
         }
 
         setPrintingRepair(null);
+        // Reset ref after a short delay to allow subsequent prints
+        setTimeout(() => {
+          isPrintingRef.current = false;
+        }, 1000);
       }
     };
 
