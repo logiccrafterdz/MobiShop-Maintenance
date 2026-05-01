@@ -35,12 +35,12 @@
 
 @layer base {
   :root {
-    /* Main palette based on logo */
-    --primary: 188 100% 40%; /* Cyan from logo */
-    --primary-foreground: 188 100% 98%;
+    /* ACTUAL LOGO COLORS */
+    --primary: 174 100% 29%; /* Darker Teal from Logo */
+    --primary-foreground: 174 100% 98%;
     
-    --secondary: 42 100% 50%; /* Yellow/Orange from logo */
-    --secondary-foreground: 42 100% 10%;
+    --secondary: 47 90% 55%; /* Golden Yellow from Logo */
+    --secondary-foreground: 47 100% 10%;
 
     --background: 210 20% 98%;
     --foreground: 222 47% 11%;
@@ -54,17 +54,17 @@
     --muted: 210 20% 94%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 188 100% 40%;
-    --accent-foreground: 188 100% 98%;
+    --accent: 174 100% 29%;
+    --accent-foreground: 174 100% 98%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 188 100% 40%;
+    --ring: 174 100% 29%;
 
-    --radius: 1rem; /* More rounded for modern look */
+    --radius: 1rem;
   }
 
   .dark {
@@ -77,16 +77,16 @@
     --popover: 222 47% 8%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 188 100% 45%;
+    --primary: 174 100% 40%;
     --primary-foreground: 222 47% 11%;
 
-    --secondary: 42 100% 55%;
+    --secondary: 47 90% 60%;
     --secondary-foreground: 222 47% 11%;
 
     --muted: 222 47% 15%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 188 100% 45%;
+    --accent: 174 100% 40%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 63% 31%;
@@ -94,7 +94,7 @@
 
     --border: 222 47% 15%;
     --input: 222 47% 15%;
-    --ring: 188 100% 45%;
+    --ring: 174 100% 40%;
   }
 }
 

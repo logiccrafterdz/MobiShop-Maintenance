@@ -17,7 +17,7 @@
   "dashboard": {
     "title": "MobiShop Maintenance",
     "newRepair": "New Repair Form",
-    "records": "Repairs List",
+    "repairsList": "Repairs List",
     "stats": "Statistics",
     "totalToday": "Today's Repairs",
     "totalMonth": "Month's Repairs",
@@ -26,17 +26,28 @@
     "weeklyRevenue": "Weekly Revenue"
   },
   "form": {
-    "customerName": "Customer Name",
-    "phone": "Phone / WhatsApp",
+    "customerInfo": "Customer Information",
+    "deviceInfo": "Device Information",
+    "repairDetails": "Repair Details",
+    "costInfo": "Cost & Deposit",
+    "customerName": "Full Name",
+    "customerPhone": "Phone / WhatsApp",
     "deviceType": "Device Type",
-    "brand": "Brand",
-    "other": "Other",
-    "model": "Device Model",
-    "issue": "Issue Description",
-    "deposit": "Deposit Paid",
-    "estCost": "Estimated Cost",
-    "notes": "Notes",
-    "savePrint": "Save & Print Receipt"
+    "deviceBrand": "Brand",
+    "deviceModel": "Device Model",
+    "issueDesc": "Issue Description",
+    "depositPaid": "Deposit Paid",
+    "estCost": "Total Cost",
+    "notes": "Additional Notes",
+    "submit": "Save & Print"
+  },
+  "status": {
+    "all": "All",
+    "pending": "Pending",
+    "inProgress": "In Progress",
+    "completed": "Ready",
+    "delivered": "Delivered",
+    "repairId": "Repair ID"
   },
   "table": {
     "id": "Repair ID",
@@ -44,13 +55,8 @@
     "device": "Device",
     "issue": "Issue",
     "deposit": "Deposit",
-    "estCost": "Est. Cost",
+    "estCost": "Cost",
     "profit": "Profit",
-    "actions": "Actions",
-    "markDelivered": "Mark Delivered",
-    "statusPending": "Pending",
-    "statusInProgress": "In Progress",
-    "statusReady": "Ready",
-    "statusDelivered": "Delivered"
+    "actions": "Actions"
   }
 }

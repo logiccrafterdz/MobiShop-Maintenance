@@ -8,7 +8,8 @@
     "status": "الحالة",
     "date": "التاريخ",
     "settings": "الإعدادات",
-    "done": "تم"
+    "done": "تم",
+    "search_placeholder": "بحث عن عميل أو جهاز..."
   },
   "settings": {
     "receiptPrinter": "طابعة الإيصالات (80مم)",
@@ -17,7 +18,7 @@
   "dashboard": {
     "title": "صيانة موبي شوب",
     "newRepair": "نموذج إصلاح جديد",
-    "records": "سجل الإصلاحات",
+    "repairsList": "سجل الإصلاحات",
     "stats": "الإحصائيات",
     "totalToday": "إصلاحات اليوم",
     "totalMonth": "إصلاحات الشهر",
@@ -26,31 +27,37 @@
     "weeklyRevenue": "الإيرادات الأسبوعية"
   },
   "form": {
-    "customerName": "اسم العميل",
-    "phone": "الهاتف / واتساب",
+    "customerInfo": "معلومات العميل",
+    "deviceInfo": "معلومات الجهاز",
+    "repairDetails": "تفاصيل العطل",
+    "costInfo": "التكاليف والعربون",
+    "customerName": "اسم العميل الكامل",
+    "customerPhone": "رقم الهاتف / واتساب",
     "deviceType": "نوع الجهاز",
-    "brand": "العلامة التجارية",
-    "other": "أخرى",
-    "model": "موديل الجهاز",
-    "issue": "وصف المشكلة",
-    "deposit": "العربون المدفوع",
-    "estCost": "التكلفة التقديرية",
-    "notes": "ملاحظات",
-    "savePrint": "حفظ وطباعة الإيصال"
+    "deviceBrand": "العلامة التجارية",
+    "deviceModel": "موديل الجهاز",
+    "issueDesc": "وصف المشكلة بالتفصيل",
+    "depositPaid": "العربون المدفوع",
+    "estCost": "التكلفة الإجمالية",
+    "notes": "ملاحظات إضافية",
+    "submit": "حفظ وطباعة الإيصال"
+  },
+  "status": {
+    "all": "الكل",
+    "pending": "في الانتظار",
+    "inProgress": "قيد التصليح",
+    "completed": "جاهز للاستلام",
+    "delivered": "تم التسليم",
+    "repairId": "رقم الإصلاح"
   },
   "table": {
-    "id": "معرف الإصلاح",
+    "id": "رقم الإصلاح",
     "customer": "العميل",
     "device": "الجهاز",
     "issue": "المشكلة",
     "deposit": "العربون",
-    "estCost": "التكلفة التقديرية",
+    "estCost": "التكلفة",
     "profit": "الربح",
-    "actions": "إجراءات",
-    "markDelivered": "تحديد كمُسلَّم",
-    "statusPending": "قيد الانتظار",
-    "statusInProgress": "جاري الإصلاح",
-    "statusReady": "جاهز",
-    "statusDelivered": "مُسلَّم"
+    "actions": "إجراءات"
   }
 }
