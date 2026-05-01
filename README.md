@@ -23,7 +23,7 @@ MobiShop Maintenance is a modern, high-performance desktop application designed 
 - **Database:** [SQLite](https://www.sqlite.org/) (via [rusqlite](https://github.com/rusqlite/rusqlite))
 - **Translations:** [i18next](https://www.i18next.com/)
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -56,7 +56,7 @@ To build a standalone executable for your current OS:
 npm run tauri build
 ```
 
-## 📄 License
+## License
 
 This project is licensed under the [MIT License](LICENSE).
 
