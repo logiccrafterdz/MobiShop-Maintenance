@@ -6,7 +6,13 @@
     "cancel": "Cancel",
     "search": "Search...",
     "status": "Status",
-    "date": "Date"
+    "date": "Date",
+    "settings": "Settings",
+    "done": "Done"
+  },
+  "settings": {
+    "receiptPrinter": "Receipt Printer (80mm)",
+    "stickerPrinter": "Sticker Printer"
   },
   "dashboard": {
     "title": "MobiShop Maintenance",

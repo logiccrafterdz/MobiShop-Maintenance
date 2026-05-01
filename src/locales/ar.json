@@ -6,7 +6,13 @@
     "cancel": "إلغاء",
     "search": "بحث...",
     "status": "الحالة",
-    "date": "التاريخ"
+    "date": "التاريخ",
+    "settings": "الإعدادات",
+    "done": "تم"
+  },
+  "settings": {
+    "receiptPrinter": "طابعة الإيصالات (80مم)",
+    "stickerPrinter": "طابعة الملصقات (Stickers)"
   },
   "dashboard": {
     "title": "صيانة موبي شوب",

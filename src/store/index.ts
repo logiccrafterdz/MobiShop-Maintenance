@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { invoke } from '@tauri-apps/api/core';
+import { getPrinters } from 'tauri-plugin-printer-v2';
 
 export interface Repair {
   id: number;
@@ -33,13 +34,18 @@ interface AppState {
   stats: DashboardStats;
   printingRepair: Repair | null;
   setPrintingRepair: (repair: Repair | null) => void;
+  printers: string[];
+  settings: Record<string, string>;
+  fetchPrinters: () => Promise<void>;
+  fetchSettings: () => Promise<void>;
+  updateSetting: (key: string, value: string) => Promise<void>;
   fetchRepairs: () => Promise<void>;
   fetchStats: () => Promise<void>;
   updateRepairStatus: (id: number, status: string, actual_cost?: number) => Promise<void>;
   deleteRepair: (id: number) => Promise<void>;
 }
 
-export const useAppStore = create<AppState>((set) => ({
+export const useAppStore = create<AppState>((set, get) => ({
   language: 'en',
   setLanguage: (lang) => {
     set({ language: lang });
@@ -49,6 +55,44 @@ export const useAppStore = create<AppState>((set) => ({
   repairs: [],
   printingRepair: null,
   setPrintingRepair: (repair) => set({ printingRepair: repair }),
+  printers: [],
+  settings: {},
+  fetchPrinters: async () => {
+    try {
+      const response = await getPrinters();
+      const data = JSON.parse(response);
+      // data is an array of printer objects, we just need names
+      const names = data.map((p: any) => p.name);
+      set({ printers: names });
+    } catch (e) {
+      console.error('Failed to fetch printers:', e);
+    }
+  },
+  fetchSettings: async () => {
+    try {
+      // Keys to fetch
+      const keys = ['receipt_printer', 'sticker_printer'];
+      const settings: Record<string, string> = {};
+      for (const key of keys) {
+        try {
+          settings[key] = await invoke<string>('get_setting', { key });
+        } catch {
+          settings[key] = '';
+        }
+      }
+      set({ settings });
+    } catch (e) {
+      console.error(e);
+    }
+  },
+  updateSetting: async (key, value) => {
+    try {
+      await invoke('save_setting', { key, value });
+      set({ settings: { ...get().settings, [key]: value } });
+    } catch (e) {
+      console.error(e);
+    }
+  },
   stats: {
     total_repairs_today: 0,
     total_repairs_month: 0,

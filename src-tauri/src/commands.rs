@@ -148,3 +148,33 @@ pub fn get_dashboard_stats(state: State<DbState>) -> Result<DashboardStats, Stri
         net_profit: total_revenue,
     })
 }
+
+#[tauri::command]
+pub fn list_printers() -> Vec<String> {
+    use printers::get_printers;
+    get_printers()
+        .into_iter()
+        .map(|p| p.name)
+        .collect()
+}
+
+#[tauri::command]
+pub fn save_setting(state: State<DbState>, key: String, value: String) -> Result<(), String> {
+    let conn = state.conn.lock().map_err(|e| e.to_string())?;
+    conn.execute(
+        "INSERT INTO settings (key, value) VALUES (?1, ?2) ON CONFLICT(key) DO UPDATE SET value = ?2",
+        params![key, value],
+    ).map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+#[tauri::command]
+pub fn get_setting(state: State<DbState>, key: String) -> Result<String, String> {
+    let conn = state.conn.lock().map_err(|e| e.to_string())?;
+    let value: String = conn.query_row(
+        "SELECT value FROM settings WHERE key = ?1",
+        params![key],
+        |row| row.get(0),
+    ).map_err(|e| e.to_string())?;
+    Ok(value)
+}

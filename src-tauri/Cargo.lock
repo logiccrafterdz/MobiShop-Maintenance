@@ -2637,6 +2637,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "printers"
+version = "2.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9973d6bf0ed339da9230a83eccbd7c2564f392bdc80246853645e9a60efb38b0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "proc-macro-crate"
 version = "1.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3498,12 +3507,14 @@ name = "tauri-app"
 version = "0.1.0"
 dependencies = [
  "chrono",
+ "printers",
  "rusqlite",
  "serde",
  "serde_json",
  "tauri",
  "tauri-build",
  "tauri-plugin-opener",
+ "tauri-plugin-printer-v2",
 ]
 
 [[package]]
@@ -3604,6 +3615,20 @@ dependencies = [
  "url",
  "windows",
  "zbus",
+]
+
+[[package]]
+name = "tauri-plugin-printer-v2"
+version = "0.2.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0d7390d2a37bfe17331b2f5f775f204f304657804819a6b96579fd567d5712be"
+dependencies = [
+ "base64 0.22.1",
+ "serde",
+ "tauri",
+ "tauri-plugin",
+ "tempfile",
+ "thiserror 2.0.18",
 ]
 
 [[package]]

@@ -10,6 +10,7 @@ use commands::*;
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_printer_v2::init())
         .setup(|app| {
             let conn = db::init_db(app.handle()).expect("Failed to initialize database");
             app.manage(commands::DbState {
@@ -22,9 +23,11 @@ pub fn run() {
             get_repairs,
             update_repair_status,
             delete_repair,
-            get_dashboard_stats
+            get_dashboard_stats,
+            list_printers,
+            save_setting,
+            get_setting
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
-

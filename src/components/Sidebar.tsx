@@ -1,10 +1,13 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store';
-import { LayoutDashboard, Languages, TrendingUp, DollarSign, PenTool } from 'lucide-react';
+import { LayoutDashboard, Languages, TrendingUp, DollarSign, PenTool, Settings as SettingsIcon } from 'lucide-react';
+import SettingsModal from './SettingsModal';
 
 export default function Sidebar() {
   const { t } = useTranslation();
   const { language, setLanguage, stats } = useAppStore();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'ar' : 'en');
@@ -22,7 +25,6 @@ export default function Sidebar() {
       <div className="p-4 flex-1 space-y-4 overflow-y-auto">
         <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">{t('dashboard.stats')}</h2>
         
-        {/* Stat Cards Connected to Backend */}
         <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center gap-4">
           <div className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 p-3 rounded-lg">
             <LayoutDashboard size={20} />
@@ -56,6 +58,13 @@ export default function Sidebar() {
 
       <div className="p-4 border-t border-slate-200 dark:border-slate-700 space-y-2">
         <button
+          onClick={() => setIsSettingsOpen(true)}
+          className="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-200"
+        >
+          <SettingsIcon size={20} />
+          <span className="font-medium">{t('common.settings') || 'Settings'}</span>
+        </button>
+        <button
           onClick={toggleLanguage}
           className="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-200"
         >
@@ -66,6 +75,8 @@ export default function Sidebar() {
           DEVELOPED BY LOGICCRAFTERDZ
         </div>
       </div>
+
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </aside>
   );
 }

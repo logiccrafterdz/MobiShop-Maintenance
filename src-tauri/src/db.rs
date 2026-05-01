@@ -13,7 +13,7 @@ pub fn init_db(app: &AppHandle) -> Result<Connection> {
     let db_path: PathBuf = app_dir.join("mobishop.db");
     let conn = Connection::open(db_path)?;
 
-    // Create tables
+    // Create repairs table
     conn.execute(
         "CREATE TABLE IF NOT EXISTS repairs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,6 +30,15 @@ pub fn init_db(app: &AppHandle) -> Result<Connection> {
             notes TEXT,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP,
             updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+        )",
+        (),
+    )?;
+
+    // Create settings table
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS settings (
+            key TEXT PRIMARY KEY,
+            value TEXT NOT NULL
         )",
         (),
     )?;
