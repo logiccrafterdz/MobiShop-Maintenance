@@ -15,9 +15,12 @@ export default function Sidebar() {
       {/* Brand Section */}
       <div className="p-8 pb-10">
         <div className="flex flex-col items-center text-center group">
-          <div className="relative mb-6">
-            <div className="absolute inset-0 bg-primary/10 blur-2xl rounded-full group-hover:bg-primary/20 transition-all duration-700 scale-150"></div>
-            <img src="/logo.png" alt="MobiShop" className="w-28 h-28 relative z-10 mix-blend-multiply dark:mix-blend-normal object-contain group-hover:scale-105 transition-transform duration-500" />
+          <div className="relative mb-6 flex justify-center">
+            <img 
+              src="/logo.png" 
+              alt="MobiShop" 
+              className="w-28 h-28 object-contain group-hover:scale-105 transition-transform duration-500" 
+            />
           </div>
           <div className="space-y-1">
             <h1 className="font-black text-[1.75rem] tracking-tighter text-slate-800 dark:text-white leading-none flex items-center justify-center">
