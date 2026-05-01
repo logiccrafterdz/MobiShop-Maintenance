@@ -8,7 +8,6 @@ import {
   ChevronLeft, 
   ChevronRight, 
   PlusCircle, 
-  ListFilter,
   Maximize2,
   Minimize2
 } from 'lucide-react';

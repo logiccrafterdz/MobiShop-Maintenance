@@ -8,10 +8,8 @@ import {
   Smartphone, 
   Wrench, 
   DollarSign, 
-  Clipboard,
   Laptop,
   Tablet,
-  DeviceUnknown,
   Plus
 } from 'lucide-react';
 
@@ -88,14 +86,14 @@ export default function NewRepairForm() {
               icon={<User size={16} />}
               placeholder={t('form.customerName')}
               value={formData.customer_name}
-              onChange={(v) => setFormData({...formData, customer_name: v})}
+              onChange={(v: string) => setFormData({...formData, customer_name: v})}
               required
             />
             <FormInput 
               icon={<Phone size={16} />}
               placeholder={t('form.customerPhone')}
               value={formData.customer_phone}
-              onChange={(v) => setFormData({...formData, customer_phone: v})}
+              onChange={(v: string) => setFormData({...formData, customer_phone: v})}
               required
             />
           </div>
@@ -141,7 +139,7 @@ export default function NewRepairForm() {
               icon={<Smartphone size={16} />}
               placeholder={t('form.deviceModel')}
               value={formData.device_model}
-              onChange={(v) => setFormData({...formData, device_model: v})}
+              onChange={(v: string) => setFormData({...formData, device_model: v})}
               required
             />
           </div>
@@ -152,7 +150,7 @@ export default function NewRepairForm() {
                 icon={<Plus size={16} />}
                 placeholder="Enter Brand Name"
                 value={formData.custom_brand}
-                onChange={(v) => setFormData({...formData, custom_brand: v})}
+                onChange={(v: string) => setFormData({...formData, custom_brand: v})}
                 required
               />
              </div>
@@ -186,7 +184,7 @@ export default function NewRepairForm() {
               placeholder={t('form.estCost')}
               type="number"
               value={formData.est_cost.toString()}
-              onChange={(v) => setFormData({...formData, est_cost: Number(v)})}
+              onChange={(v: string) => setFormData({...formData, est_cost: Number(v)})}
               required
             />
             <FormInput 
@@ -194,7 +192,7 @@ export default function NewRepairForm() {
               placeholder={t('form.depositPaid')}
               type="number"
               value={formData.deposit_paid.toString()}
-              onChange={(v) => setFormData({...formData, deposit_paid: Number(v)})}
+              onChange={(v: string) => setFormData({...formData, deposit_paid: Number(v)})}
               required
             />
           </div>
@@ -206,7 +204,7 @@ export default function NewRepairForm() {
           type="submit"
           className="w-full bg-primary text-white py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 flex items-center justify-center gap-3 active:scale-[0.98]"
         >
-          <PlusCircle size={20} />
+          <Plus size={20} />
           {t('form.submit')}
         </button>
       </div>
@@ -214,7 +212,7 @@ export default function NewRepairForm() {
   );
 }
 
-function SectionHeader({ icon, title }: { icon: any, title: string }) {
+function SectionHeader({ icon, title }: { icon: React.ReactNode, title: string }) {
   return (
     <div className="flex items-center gap-2 mb-2">
       <div className="text-primary/60">{icon}</div>
@@ -223,7 +221,16 @@ function SectionHeader({ icon, title }: { icon: any, title: string }) {
   );
 }
 
-function FormInput({ icon, placeholder, value, onChange, required, type = "text" }: any) {
+interface FormInputProps {
+  icon: React.ReactNode;
+  placeholder: string;
+  value: string;
+  onChange: (v: string) => void;
+  required?: boolean;
+  type?: string;
+}
+
+function FormInput({ icon, placeholder, value, onChange, required, type = "text" }: FormInputProps) {
   return (
     <div className="relative group">
       <div className="absolute inset-y-0 left-4 flex items-center text-slate-400 group-focus-within:text-primary transition-colors">
@@ -239,8 +246,4 @@ function FormInput({ icon, placeholder, value, onChange, required, type = "text"
       />
     </div>
   );
-}
-
-function PlusCircle({ size }: { size: number }) {
-  return <Plus size={size} />;
 }

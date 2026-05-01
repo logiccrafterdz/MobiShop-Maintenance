@@ -1,17 +1,14 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppStore, Repair } from '../store';
+import { useAppStore } from '../store';
 import { format } from 'date-fns';
 import { 
   Search, 
-  Filter, 
   Printer, 
   Trash2, 
   CheckCircle2, 
   Clock, 
-  AlertCircle,
-  MoreVertical,
-  ChevronDown
+  AlertCircle
 } from 'lucide-react';
 
 export default function RepairsList() {
@@ -175,7 +172,14 @@ export default function RepairsList() {
   );
 }
 
-function ActionBtn({ icon, onClick, color, tooltip }: any) {
+interface ActionBtnProps {
+  icon: React.ReactNode;
+  onClick: () => void;
+  color: 'primary' | 'success' | 'danger';
+  tooltip: string;
+}
+
+function ActionBtn({ icon, onClick, color, tooltip }: ActionBtnProps) {
   const colors = {
     primary: "hover:bg-primary/10 hover:text-primary",
     success: "hover:bg-emerald-500/10 hover:text-emerald-500",
@@ -186,7 +190,7 @@ function ActionBtn({ icon, onClick, color, tooltip }: any) {
     <button 
       onClick={onClick}
       title={tooltip}
-      className={`p-2.5 rounded-xl text-slate-400 transition-all active:scale-90 ${colors[color as keyof typeof colors]}`}
+      className={`p-2.5 rounded-xl text-slate-400 transition-all active:scale-90 ${colors[color]}`}
     >
       {icon}
     </button>

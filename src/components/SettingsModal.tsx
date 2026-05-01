@@ -63,14 +63,14 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             <PrinterSelector 
               label={t('settings.receiptPrinter')}
               value={settings.receipt_printer || ''}
-              onChange={(val) => updateSetting('receipt_printer', val)}
+              onChange={(val: string) => updateSetting('receipt_printer', val)}
               printers={printers}
             />
 
             <PrinterSelector 
               label={t('settings.stickerPrinter')}
               value={settings.sticker_printer || ''}
-              onChange={(val) => updateSetting('sticker_printer', val)}
+              onChange={(val: string) => updateSetting('sticker_printer', val)}
               printers={printers}
             />
           </div>
@@ -91,7 +91,14 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   );
 }
 
-function PrinterSelector({ label, value, onChange, printers }: any) {
+interface PrinterSelectorProps {
+  label: string;
+  value: string;
+  onChange: (val: string) => void;
+  printers: string[];
+}
+
+function PrinterSelector({ label, value, onChange, printers }: PrinterSelectorProps) {
   return (
     <div className="space-y-3">
       <label className="text-[11px] font-bold text-slate-500 uppercase tracking-tight ml-1">

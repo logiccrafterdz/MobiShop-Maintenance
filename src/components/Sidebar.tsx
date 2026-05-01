@@ -5,10 +5,7 @@ import {
   LayoutDashboard, 
   Languages, 
   TrendingUp, 
-  DollarSign, 
   Settings as SettingsIcon,
-  ChevronLeft,
-  ChevronRight,
   ShieldCheck
 } from 'lucide-react';
 import SettingsModal from './SettingsModal';
@@ -101,7 +98,7 @@ export default function Sidebar() {
   );
 }
 
-function StatItem({ icon, label, value, color }: { icon: any, label: string, value: string, color: 'blue' | 'cyan' | 'orange' }) {
+function StatItem({ icon, label, value, color }: { icon: React.ReactNode, label: string, value: string, color: 'blue' | 'cyan' | 'orange' }) {
   const colors = {
     blue: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
     cyan: "bg-primary/10 text-primary",
@@ -121,7 +118,7 @@ function StatItem({ icon, label, value, color }: { icon: any, label: string, val
   );
 }
 
-function SidebarAction({ icon, label, onClick }: { icon: any, label: string, onClick: () => void }) {
+function SidebarAction({ icon, label, onClick }: { icon: React.ReactNode, label: string, onClick: () => void }) {
   return (
     <button
       onClick={onClick}
