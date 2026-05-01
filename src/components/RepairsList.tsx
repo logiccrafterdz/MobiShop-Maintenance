@@ -66,7 +66,7 @@ export default function RepairsList() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900">
+    <div className="flex flex-col h-full min-w-0 bg-white dark:bg-slate-900">
       {/* Search & Filter Header */}
       <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex flex-wrap gap-4 items-center">
         <div className="relative flex-1 min-w-[200px]">

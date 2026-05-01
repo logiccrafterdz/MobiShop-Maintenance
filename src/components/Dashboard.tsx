@@ -64,7 +64,7 @@ export default function Dashboard() {
       }`}>
         
         {/* Form Section */}
-        <section className={`flex flex-col min-h-0 transition-all duration-500 ${
+        <section className={`flex flex-col min-h-0 min-w-0 transition-all duration-500 ${
           !isFormOpen ? 'hidden' : 'block animate-slide-up'
         }`}>
           <div className="flex items-center justify-between mb-4 px-2">
@@ -83,13 +83,13 @@ export default function Dashboard() {
             </button>
           </div>
           
-          <div className="flex-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl shadow-sm border border-slate-200/50 dark:border-slate-800/60 overflow-hidden flex flex-col">
+          <div className="flex-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl shadow-sm border border-slate-200/50 dark:border-slate-800/60 overflow-hidden flex flex-col min-w-0">
             <NewRepairForm />
           </div>
         </section>
 
         {/* List Section */}
-        <section className={`flex flex-col min-h-0 transition-all duration-500 ${
+        <section className={`flex flex-col min-h-0 min-w-0 transition-all duration-500 ${
           !isListOpen ? 'hidden' : 'block animate-slide-up'
         }`}>
           <div className="flex items-center justify-between mb-4 px-2">
