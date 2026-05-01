@@ -44,15 +44,14 @@ export default function NewRepairForm() {
     try {
       const finalBrand = formData.device_brand === 'Other' ? formData.custom_brand : formData.device_brand;
       
-      // BUG-02 FIX: Send only the exact fields the Rust backend expects
       const repairId = await invoke<string>('add_repair', {
-        customer_name: formData.customer_name,
-        customer_phone: formData.customer_phone,
-        device_type: formData.device_type,
-        device_model: `${finalBrand} ${formData.device_model}`.trim(),
-        issue_desc: formData.issue_desc,
-        deposit_paid: Number(formData.deposit_paid),
-        est_cost: Number(formData.est_cost),
+        customerName: formData.customer_name,
+        customerPhone: formData.customer_phone,
+        deviceType: formData.device_type,
+        deviceModel: `${finalBrand} ${formData.device_model}`.trim(),
+        issueDesc: formData.issue_desc,
+        depositPaid: Number(formData.deposit_paid),
+        estCost: Number(formData.est_cost),
         notes: formData.notes || null,
       });
 
