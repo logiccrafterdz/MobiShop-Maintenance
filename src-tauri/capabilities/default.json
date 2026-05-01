@@ -6,8 +6,8 @@
   "permissions": [
     "core:default",
     "opener:default",
-    "printer:allow-get-printers",
-    "printer:allow-print-pdf",
-    "printer:allow-print-html"
+    "printer-v2:allow-get-printers",
+    "printer-v2:allow-print-pdf",
+    "printer-v2:allow-print-html"
   ]
 }

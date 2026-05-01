@@ -40,6 +40,7 @@ export default function ReceiptPrint() {
         if (receiptHtml && settings.receipt_printer) {
           try {
             await printHtml({
+              id: `receipt-${printingRepair.repair_id}-${Date.now()}`,
               html: styles + receiptHtml,
               printer: settings.receipt_printer,
             });
@@ -53,6 +54,7 @@ export default function ReceiptPrint() {
         if (stickerHtml && settings.sticker_printer) {
           try {
             await printHtml({
+              id: `sticker-${printingRepair.repair_id}-${Date.now()}`,
               html: styles + stickerHtml,
               printer: settings.sticker_printer,
             });
