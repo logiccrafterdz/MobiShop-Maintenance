@@ -1,7 +1,16 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store';
-import { LayoutDashboard, Languages, TrendingUp, DollarSign, PenTool, Settings as SettingsIcon } from 'lucide-react';
+import { 
+  LayoutDashboard, 
+  Languages, 
+  TrendingUp, 
+  DollarSign, 
+  Settings as SettingsIcon,
+  ChevronLeft,
+  ChevronRight,
+  ShieldCheck
+} from 'lucide-react';
 import SettingsModal from './SettingsModal';
 
 export default function Sidebar() {
@@ -14,69 +23,114 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-64 bg-white dark:bg-slate-800 border-e border-slate-200 dark:border-slate-700 flex flex-col">
-      <div className="p-6 flex items-center gap-3 border-b border-slate-200 dark:border-slate-700">
-        <div className="bg-primary/10 text-primary p-2 rounded-lg">
-          <PenTool size={24} />
+    <aside className="w-72 bg-white dark:bg-slate-900 border-e border-slate-200/60 dark:border-slate-800/60 flex flex-col shadow-sm z-50">
+      {/* Brand Section */}
+      <div className="p-8 pb-6">
+        <div className="flex items-center gap-4 group">
+          <div className="relative">
+            <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full group-hover:bg-primary/30 transition-all duration-500"></div>
+            <img src="/logo.png" alt="MobiShop" className="w-12 h-12 relative z-10 drop-shadow-md group-hover:scale-105 transition-transform duration-300" />
+          </div>
+          <div>
+            <h1 className="font-black text-2xl tracking-tighter text-slate-800 dark:text-white leading-none">
+              MOBI<span className="text-primary">SHOP</span>
+            </h1>
+            <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase mt-1">Maintenance</p>
+          </div>
         </div>
-        <h1 className="font-bold text-lg leading-tight">{t('dashboard.title')}</h1>
       </div>
 
-      <div className="p-4 flex-1 space-y-4 overflow-y-auto">
-        <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">{t('dashboard.stats')}</h2>
+      {/* Navigation & Stats Section */}
+      <div className="flex-1 px-4 py-2 space-y-6 overflow-y-auto custom-scrollbar">
+        <div>
+          <h2 className="px-4 text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em] mb-4">
+            {t('dashboard.stats')}
+          </h2>
+          
+          <div className="space-y-3">
+            {/* Stat Cards */}
+            <StatItem 
+              icon={<LayoutDashboard size={18} />} 
+              label={t('dashboard.totalToday')} 
+              value={stats.total_repairs_today.toString()} 
+              color="blue"
+            />
+            <StatItem 
+              icon={<TrendingUp size={18} />} 
+              label={t('dashboard.revenue')} 
+              value={`${stats.revenue.toLocaleString()} DZD`} 
+              color="cyan"
+            />
+            <StatItem 
+              icon={<ShieldCheck size={18} />} 
+              label={t('dashboard.netProfit')} 
+              value={`${stats.net_profit.toLocaleString()} DZD`} 
+              color="orange"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Actions */}
+      <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+        <div className="flex flex-col gap-1">
+          <SidebarAction 
+            icon={<SettingsIcon size={20} />} 
+            label={t('common.settings')} 
+            onClick={() => setIsSettingsOpen(true)} 
+          />
+          <SidebarAction 
+            icon={<Languages size={20} />} 
+            label={language === 'en' ? 'العربية' : 'English'} 
+            onClick={toggleLanguage} 
+          />
+        </div>
         
-        <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center gap-4">
-          <div className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 p-3 rounded-lg">
-            <LayoutDashboard size={20} />
+        <div className="mt-6 text-center">
+          <div className="inline-block px-3 py-1 bg-slate-200/50 dark:bg-slate-800/50 rounded-full">
+            <span className="text-[9px] font-black tracking-widest text-slate-500 dark:text-slate-400 uppercase">
+              DEVLOPED BY <span className="text-primary">LOGICCRAFTERDZ</span>
+            </span>
           </div>
-          <div>
-            <p className="text-sm text-slate-500 dark:text-slate-400">{t('dashboard.totalToday')}</p>
-            <p className="text-xl font-bold">{stats.total_repairs_today}</p>
-          </div>
-        </div>
-
-        <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center gap-4">
-          <div className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 p-3 rounded-lg">
-            <TrendingUp size={20} />
-          </div>
-          <div>
-            <p className="text-sm text-slate-500 dark:text-slate-400">{t('dashboard.revenue')}</p>
-            <p className="text-xl font-bold">{stats.revenue.toFixed(2)} DZD</p>
-          </div>
-        </div>
-
-        <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center gap-4">
-          <div className="bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 p-3 rounded-lg">
-            <DollarSign size={20} />
-          </div>
-          <div>
-            <p className="text-sm text-slate-500 dark:text-slate-400">{t('dashboard.netProfit')}</p>
-            <p className="text-xl font-bold">{stats.net_profit.toFixed(2)} DZD</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="p-4 border-t border-slate-200 dark:border-slate-700 space-y-2">
-        <button
-          onClick={() => setIsSettingsOpen(true)}
-          className="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-200"
-        >
-          <SettingsIcon size={20} />
-          <span className="font-medium">{t('common.settings') || 'Settings'}</span>
-        </button>
-        <button
-          onClick={toggleLanguage}
-          className="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-200"
-        >
-          <Languages size={20} />
-          <span className="font-medium">{language === 'en' ? 'العربية' : 'English'}</span>
-        </button>
-        <div className="text-[10px] text-center text-slate-400 font-bold tracking-widest pt-2">
-          DEVELOPED BY LOGICCRAFTERDZ
+          <p className="text-[8px] text-slate-400 mt-2 font-medium">© 2024 ALL RIGHTS RESERVED</p>
         </div>
       </div>
 
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </aside>
+  );
+}
+
+function StatItem({ icon, label, value, color }: { icon: any, label: string, value: string, color: 'blue' | 'cyan' | 'orange' }) {
+  const colors = {
+    blue: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+    cyan: "bg-primary/10 text-primary",
+    orange: "bg-secondary/10 text-secondary"
+  };
+
+  return (
+    <div className="group px-4 py-3.5 bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60 rounded-2xl flex items-center gap-4 transition-all duration-300 hover:shadow-md hover:shadow-primary/5 hover:border-primary/20">
+      <div className={`p-2.5 rounded-xl transition-transform duration-300 group-hover:scale-110 ${colors[color]}`}>
+        {icon}
+      </div>
+      <div>
+        <p className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight">{label}</p>
+        <p className="text-lg font-black tracking-tight text-slate-800 dark:text-white leading-none mt-1">{value}</p>
+      </div>
+    </div>
+  );
+}
+
+function SidebarAction({ icon, label, onClick }: { icon: any, label: string, onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex items-center gap-3 w-full p-3 rounded-xl hover:bg-white dark:hover:bg-slate-800 hover:shadow-sm transition-all duration-200 text-slate-600 dark:text-slate-300 hover:text-primary group"
+    >
+      <div className="text-slate-400 group-hover:text-primary transition-colors">
+        {icon}
+      </div>
+      <span className="font-bold text-sm tracking-tight">{label}</span>
+    </button>
   );
 }

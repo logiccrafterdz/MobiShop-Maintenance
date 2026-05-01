@@ -1,142 +1,246 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { invoke } from '@tauri-apps/api/core';
 import { useAppStore } from '../store';
-
-const schema = z.object({
-  customerName: z.string().min(1, 'Required'),
-  customerPhone: z.string().min(1, 'Required'),
-  deviceType: z.string().min(1, 'Required'),
-  brand: z.string().min(1, 'Required'),
-  customBrand: z.string().optional(),
-  deviceModel: z.string().min(1, 'Required'),
-  issueDesc: z.string().min(1, 'Required'),
-  depositPaid: z.number().min(0),
-  estCost: z.number().min(0),
-  notes: z.string().optional(),
-});
-
-type FormData = z.infer<typeof schema>;
+import { invoke } from '@tauri-apps/api/core';
+import { 
+  User, 
+  Phone, 
+  Smartphone, 
+  Wrench, 
+  DollarSign, 
+  Clipboard,
+  Laptop,
+  Tablet,
+  DeviceUnknown,
+  Plus
+} from 'lucide-react';
 
 const BRANDS = {
-  Phone: ['Apple', 'Samsung', 'Xiaomi', 'Oppo', 'Realme', 'Vivo', 'Huawei', 'Honor', 'Google Pixel', 'OnePlus'],
-  Laptop: ['HP', 'Dell', 'Lenovo', 'Asus', 'Acer', 'Apple', 'MSI', 'Microsoft Surface'],
-  Tablet: ['Apple (iPad)', 'Samsung', 'Lenovo', 'Huawei', 'Xiaomi'],
+  Phone: ['Apple', 'Samsung', 'Huawei', 'Xiaomi', 'Oppo', 'Realme', 'Other'],
+  Laptop: ['HP', 'Dell', 'Lenovo', 'Asus', 'Acer', 'MacBook', 'Other'],
+  Tablet: ['iPad', 'Galaxy Tab', 'Huawei MatePad', 'Lenovo Tab', 'Other'],
+  Other: ['Other']
 };
 
 export default function NewRepairForm() {
   const { t } = useTranslation();
   const { fetchRepairs, fetchStats } = useAppStore();
-  
-  const { register, handleSubmit, watch, formState: { errors }, reset, setValue } = useForm<FormData>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      deviceType: 'Phone',
-      depositPaid: 0,
-      estCost: 0,
-      brand: 'Samsung',
-    }
+  const [formData, setFormData] = useState({
+    customer_name: '',
+    customer_phone: '',
+    device_type: 'Phone',
+    device_brand: 'Apple',
+    custom_brand: '',
+    device_model: '',
+    issue_desc: '',
+    deposit_paid: 0,
+    est_cost: 0,
+    notes: ''
   });
 
-  const selectedType = watch('deviceType') as keyof typeof BRANDS;
-  const selectedBrand = watch('brand');
-
-  useEffect(() => {
-    const firstBrand = BRANDS[selectedType]?.[0] || 'Other';
-    setValue('brand', firstBrand);
-  }, [selectedType, setValue]);
-
-  const onSubmit = async (data: FormData) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      const finalBrand = data.brand === 'Other' ? data.customBrand : data.brand;
-      const fullModel = `${finalBrand} ${data.deviceModel}`;
-
-      const repairId = await invoke<string>('add_repair', {
-        customerName: data.customerName,
-        customerPhone: data.customerPhone,
-        deviceType: data.deviceType,
-        deviceModel: fullModel,
-        issueDesc: data.issueDesc,
-        depositPaid: data.depositPaid,
-        estCost: data.estCost,
-        notes: data.notes || null,
+      const finalBrand = formData.device_brand === 'Other' ? formData.custom_brand : formData.device_brand;
+      await invoke('add_repair', { 
+        ...formData,
+        device_brand: finalBrand,
+        depositPaid: Number(formData.deposit_paid),
+        estCost: Number(formData.est_cost)
       });
-      console.log('Created repair:', repairId);
-      
-      reset();
-      await fetchRepairs();
-      await fetchStats();
-      
-      const newRepair = useAppStore.getState().repairs.find(r => r.repair_id === repairId);
-      if (newRepair) {
-        useAppStore.getState().setPrintingRepair(newRepair);
-      }
-    } catch (e) {
-      console.error('Failed to add repair:', e);
+      setFormData({
+        customer_name: '',
+        customer_phone: '',
+        device_type: 'Phone',
+        device_brand: 'Apple',
+        custom_brand: '',
+        device_model: '',
+        issue_desc: '',
+        deposit_paid: 0,
+        est_cost: 0,
+        notes: ''
+      });
+      fetchRepairs();
+      fetchStats();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const getIconForType = (type: string) => {
+    switch(type) {
+      case 'Phone': return <Smartphone size={18} />;
+      case 'Laptop': return <Laptop size={18} />;
+      case 'Tablet': return <Tablet size={18} />;
+      default: return <Smartphone size={18} />;
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div className="space-y-1">
-        <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.customerName')}</label>
-        <input {...register('customerName')} type="text" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
-        {errors.customerName && <p className="text-xs text-red-500">{errors.customerName.message}</p>}
-      </div>
-      <div className="space-y-1">
-        <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.phone')}</label>
-        <input {...register('customerPhone')} type="text" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
-      </div>
-      <div className="space-y-1">
-        <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.deviceType')}</label>
-        <select {...register('deviceType')} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900">
-          <option value="Phone">Phone</option>
-          <option value="Laptop">Laptop</option>
-          <option value="Tablet">Tablet</option>
-        </select>
-      </div>
-
-      <div className="space-y-1">
-        <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.brand')}</label>
-        <select {...register('brand')} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900">
-          {(BRANDS[selectedType] || []).map(b => (
-            <option key={b} value={b}>{b}</option>
-          ))}
-          <option value="Other">{t('form.other')}</option>
-        </select>
-      </div>
-
-      {selectedBrand === 'Other' && (
-        <div className="space-y-1">
-          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.other')} ({t('form.brand')})</label>
-          <input {...register('customBrand')} type="text" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
+    <form onSubmit={handleSubmit} className="flex flex-col h-full bg-white dark:bg-slate-900">
+      <div className="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
+        
+        {/* Customer Section */}
+        <div className="space-y-4">
+          <SectionHeader icon={<User size={18} />} title={t('form.customerInfo')} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormInput 
+              icon={<User size={16} />}
+              placeholder={t('form.customerName')}
+              value={formData.customer_name}
+              onChange={(v) => setFormData({...formData, customer_name: v})}
+              required
+            />
+            <FormInput 
+              icon={<Phone size={16} />}
+              placeholder={t('form.customerPhone')}
+              value={formData.customer_phone}
+              onChange={(v) => setFormData({...formData, customer_phone: v})}
+              required
+            />
+          </div>
         </div>
-      )}
 
-      <div className="space-y-1">
-        <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.model')}</label>
-        <input {...register('deviceModel')} type="text" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
+        {/* Device Section */}
+        <div className="space-y-4">
+          <SectionHeader icon={<Smartphone size={18} />} title={t('form.deviceInfo')} />
+          
+          {/* Type Selector */}
+          <div className="flex gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl">
+            {Object.keys(BRANDS).map((type) => (
+              <button
+                key={type}
+                type="button"
+                onClick={() => setFormData({...formData, device_type: type, device_brand: BRANDS[type as keyof typeof BRANDS][0]})}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-black transition-all ${
+                  formData.device_type === type 
+                  ? 'bg-white dark:bg-slate-700 shadow-sm text-primary' 
+                  : 'text-slate-500 hover:text-slate-700'
+                }`}
+              >
+                {getIconForType(type)}
+                {type}
+              </button>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <select
+                value={formData.device_brand}
+                onChange={(e) => setFormData({...formData, device_brand: e.target.value})}
+                className="w-full px-4 py-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-primary outline-none transition-all appearance-none cursor-pointer"
+              >
+                {BRANDS[formData.device_type as keyof typeof BRANDS].map(b => (
+                  <option key={b} value={b}>{b}</option>
+                ))}
+              </select>
+            </div>
+            
+            <FormInput 
+              icon={<Smartphone size={16} />}
+              placeholder={t('form.deviceModel')}
+              value={formData.device_model}
+              onChange={(v) => setFormData({...formData, device_model: v})}
+              required
+            />
+          </div>
+
+          {formData.device_brand === 'Other' && (
+             <div className="animate-in slide-in-from-top-2 duration-200">
+               <FormInput 
+                icon={<Plus size={16} />}
+                placeholder="Enter Brand Name"
+                value={formData.custom_brand}
+                onChange={(v) => setFormData({...formData, custom_brand: v})}
+                required
+              />
+             </div>
+          )}
+        </div>
+
+        {/* Repair Details */}
+        <div className="space-y-4">
+          <SectionHeader icon={<Wrench size={18} />} title={t('form.repairDetails')} />
+          <div className="relative">
+            <textarea
+              placeholder={t('form.issueDesc')}
+              value={formData.issue_desc}
+              onChange={(e) => setFormData({...formData, issue_desc: e.target.value})}
+              required
+              rows={3}
+              className="w-full p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-primary outline-none transition-all resize-none"
+            />
+            <div className="absolute top-4 right-4 text-slate-300 dark:text-slate-600">
+              <Wrench size={18} />
+            </div>
+          </div>
+        </div>
+
+        {/* Financial Details */}
+        <div className="space-y-4">
+          <SectionHeader icon={<DollarSign size={18} />} title={t('form.costInfo')} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormInput 
+              icon={<DollarSign size={16} />}
+              placeholder={t('form.estCost')}
+              type="number"
+              value={formData.est_cost.toString()}
+              onChange={(v) => setFormData({...formData, est_cost: Number(v)})}
+              required
+            />
+            <FormInput 
+              icon={<DollarSign size={16} />}
+              placeholder={t('form.depositPaid')}
+              type="number"
+              value={formData.deposit_paid.toString()}
+              onChange={(v) => setFormData({...formData, deposit_paid: Number(v)})}
+              required
+            />
+          </div>
+        </div>
       </div>
-      <div className="space-y-1 lg:col-span-2">
-        <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.issue')}</label>
-        <textarea {...register('issueDesc')} rows={2} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900 resize-none" />
-      </div>
-      <div className="space-y-1">
-        <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.deposit')}</label>
-        <input {...register('depositPaid', { valueAsNumber: true })} type="number" step="0.01" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
-      </div>
-      <div className="space-y-1">
-        <label className="text-sm font-medium text-slate-700 dark:text-slate-300">{t('form.estCost')}</label>
-        <input {...register('estCost', { valueAsNumber: true })} type="number" step="0.01" className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900" />
-      </div>
-      <div className="lg:col-span-4 flex justify-end mt-2">
-        <button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-colors shadow-sm">
-          {t('form.savePrint')}
+
+      <div className="p-8 bg-slate-50/50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800">
+        <button
+          type="submit"
+          className="w-full bg-primary text-white py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 flex items-center justify-center gap-3 active:scale-[0.98]"
+        >
+          <PlusCircle size={20} />
+          {t('form.submit')}
         </button>
       </div>
     </form>
   );
+}
+
+function SectionHeader({ icon, title }: { icon: any, title: string }) {
+  return (
+    <div className="flex items-center gap-2 mb-2">
+      <div className="text-primary/60">{icon}</div>
+      <h3 className="text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">{title}</h3>
+    </div>
+  );
+}
+
+function FormInput({ icon, placeholder, value, onChange, required, type = "text" }: any) {
+  return (
+    <div className="relative group">
+      <div className="absolute inset-y-0 left-4 flex items-center text-slate-400 group-focus-within:text-primary transition-colors">
+        {icon}
+      </div>
+      <input
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        required={required}
+        className="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-primary outline-none transition-all"
+      />
+    </div>
+  );
+}
+
+function PlusCircle({ size }: { size: number }) {
+  return <Plus size={size} />;
 }
