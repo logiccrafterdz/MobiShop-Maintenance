@@ -28,27 +28,34 @@ export default function RepairsList() {
     return matchesSearch && matchesStatus;
   });
 
+  const handleDelete = (id: number, repairId: string) => {
+    // MED-04 FIX: Confirm before delete
+    if (window.confirm(t('table.confirmDelete', { id: repairId }))) {
+      deleteRepair(id);
+    }
+  };
+
   const getStatusInfo = (status: string) => {
     switch(status) {
       case 'Pending': return { 
         color: 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400', 
         icon: <Clock size={14} />,
-        label: t('status.pending') || 'Pending'
+        label: t('status.pending')
       };
       case 'In Progress': return { 
         color: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400', 
         icon: <Clock size={14} />,
-        label: t('status.inProgress') || 'In Progress'
+        label: t('status.inProgress')
       };
       case 'Completed': return { 
         color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400', 
         icon: <CheckCircle2 size={14} />,
-        label: t('status.completed') || 'Completed'
+        label: t('status.completed')
       };
       case 'Delivered': return { 
         color: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400', 
         icon: <CheckCircle2 size={14} />,
-        label: t('status.delivered') || 'Delivered'
+        label: t('status.delivered')
       };
       default: return { 
         color: 'bg-slate-100 text-slate-600', 
@@ -63,13 +70,13 @@ export default function RepairsList() {
       {/* Search & Filter Header */}
       <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex flex-wrap gap-4 items-center">
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          <Search className="absolute start-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
           <input
             type="text"
             placeholder={t('common.search')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-primary outline-none transition-all"
+            className="w-full ps-12 pe-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-primary outline-none transition-all"
           />
         </div>
         
@@ -84,7 +91,7 @@ export default function RepairsList() {
                 : 'bg-slate-50 dark:bg-slate-800 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
               }`}
             >
-              {s === 'all' ? (t('status.all') || 'All') : s}
+              {s === 'all' ? t('status.all') : t(`status.${s === 'In Progress' ? 'inProgress' : s.toLowerCase()}`)}
             </button>
           ))}
         </div>
@@ -92,15 +99,15 @@ export default function RepairsList() {
 
       {/* Repairs Table */}
       <div className="flex-1 overflow-auto custom-scrollbar">
-        <table className="w-full text-left border-collapse">
+        <table className="w-full text-start border-collapse">
           <thead className="sticky top-0 bg-slate-50 dark:bg-slate-800/80 backdrop-blur-md z-10">
             <tr>
-              <th className="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest">{t('status.repairId') || 'Repair ID'}</th>
-              <th className="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest">{t('form.customerInfo')}</th>
-              <th className="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest">{t('form.deviceInfo')}</th>
-              <th className="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest">{t('common.status')}</th>
-              <th className="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest">{t('common.date')}</th>
-              <th className="px-6 py-4 text-right"></th>
+              <th className="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-start">{t('status.repairId')}</th>
+              <th className="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-start">{t('form.customerInfo')}</th>
+              <th className="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-start">{t('form.deviceInfo')}</th>
+              <th className="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-start">{t('common.status')}</th>
+              <th className="px-6 py-4 text-[11px] font-black text-slate-400 uppercase tracking-widest text-start">{t('common.date')}</th>
+              <th className="px-6 py-4 text-end"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -120,7 +127,7 @@ export default function RepairsList() {
                   <td className="px-6 py-5">
                     <div className="flex flex-col">
                       <span className="font-bold text-slate-700 dark:text-slate-300">{repair.device_model}</span>
-                      <span className="text-xs text-slate-400 font-medium mt-0.5">{repair.device_type} • {repair.issue_desc.substring(0, 20)}...</span>
+                      <span className="text-xs text-slate-400 font-medium mt-0.5">{repair.device_type} • {repair.issue_desc.substring(0, 20)}{repair.issue_desc.length > 20 ? '...' : ''}</span>
                     </div>
                   </td>
                   <td className="px-6 py-5">
@@ -132,25 +139,25 @@ export default function RepairsList() {
                   <td className="px-6 py-5">
                     <span className="text-xs font-bold text-slate-400">{format(new Date(repair.created_at), 'MMM dd, HH:mm')}</span>
                   </td>
-                  <td className="px-6 py-5 text-right">
+                  <td className="px-6 py-5 text-end">
                     <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       <ActionBtn 
                         icon={<Printer size={16} />} 
                         onClick={() => setPrintingRepair(repair)} 
                         color="primary"
-                        tooltip="Print Receipt"
+                        tooltip={t('table.print')}
                       />
                       <ActionBtn 
                         icon={<CheckCircle2 size={16} />} 
                         onClick={() => updateRepairStatus(repair.id, 'Completed')} 
                         color="success"
-                        tooltip="Mark Completed"
+                        tooltip={t('table.markCompleted')}
                       />
                       <ActionBtn 
                         icon={<Trash2 size={16} />} 
-                        onClick={() => deleteRepair(repair.id)} 
+                        onClick={() => handleDelete(repair.id, repair.repair_id)} 
                         color="danger"
-                        tooltip="Delete"
+                        tooltip={t('common.delete')}
                       />
                     </div>
                   </td>
@@ -164,7 +171,7 @@ export default function RepairsList() {
             <div className="bg-slate-100 dark:bg-slate-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
               <Search size={32} />
             </div>
-            <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">No Repairs Found</p>
+            <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">{t('table.noResults')}</p>
           </div>
         )}
       </div>

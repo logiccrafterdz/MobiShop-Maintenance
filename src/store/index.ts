@@ -51,6 +51,8 @@ export const useAppStore = create<AppState>((set, get) => ({
     set({ language: lang });
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;
+    // i18n-02 FIX: Persist language preference
+    invoke('save_setting', { key: 'language', value: lang }).catch(() => {});
   },
   repairs: [],
   printingRepair: null,
@@ -60,18 +62,24 @@ export const useAppStore = create<AppState>((set, get) => ({
   fetchPrinters: async () => {
     try {
       const response = await getPrinters();
-      const data = JSON.parse(response);
-      // data is an array of printer objects, we just need names
-      const names = data.map((p: any) => p.name);
+      // BUG-04 FIX: Handle both string and object responses
+      const data = typeof response === 'string' ? JSON.parse(response) : response;
+      const names = Array.isArray(data) ? data.map((p: any) => p.name || p) : [];
       set({ printers: names });
     } catch (e) {
       console.error('Failed to fetch printers:', e);
+      // Fallback: Try the Rust command
+      try {
+        const names = await invoke<string[]>('list_printers');
+        set({ printers: names });
+      } catch (e2) {
+        console.error('Fallback list_printers also failed:', e2);
+      }
     }
   },
   fetchSettings: async () => {
     try {
-      // Keys to fetch
-      const keys = ['receipt_printer', 'sticker_printer'];
+      const keys = ['receipt_printer', 'sticker_printer', 'language'];
       const settings: Record<string, string> = {};
       for (const key of keys) {
         try {
@@ -81,6 +89,16 @@ export const useAppStore = create<AppState>((set, get) => ({
         }
       }
       set({ settings });
+
+      // Restore saved language
+      if (settings.language && (settings.language === 'en' || settings.language === 'ar')) {
+        const currentLang = get().language;
+        if (currentLang !== settings.language) {
+          set({ language: settings.language as 'en' | 'ar' });
+          document.documentElement.dir = settings.language === 'ar' ? 'rtl' : 'ltr';
+          document.documentElement.lang = settings.language;
+        }
+      }
     } catch (e) {
       console.error(e);
     }

@@ -4,7 +4,7 @@
     "edit": "Edit",
     "delete": "Delete",
     "cancel": "Cancel",
-    "search": "Search...",
+    "search": "Search customer or device...",
     "status": "Status",
     "date": "Date",
     "settings": "Settings",
@@ -12,7 +12,11 @@
   },
   "settings": {
     "receiptPrinter": "Receipt Printer (80mm)",
-    "stickerPrinter": "Sticker Printer"
+    "stickerPrinter": "Sticker Printer",
+    "printerSetup": "Printer Setup",
+    "systemConfig": "System Configuration",
+    "refreshList": "Refresh List",
+    "noPrinter": "-- No Printer Selected --"
   },
   "dashboard": {
     "title": "MobiShop Maintenance",
@@ -23,7 +27,9 @@
     "totalMonth": "Month's Repairs",
     "revenue": "Total Revenue",
     "netProfit": "Net Profit",
-    "weeklyRevenue": "Weekly Revenue"
+    "weeklyRevenue": "Weekly Revenue",
+    "focusForm": "Focus Form",
+    "showList": "Show List"
   },
   "form": {
     "customerInfo": "Customer Information",
@@ -35,9 +41,10 @@
     "deviceType": "Device Type",
     "deviceBrand": "Brand",
     "deviceModel": "Device Model",
+    "enterBrand": "Enter Brand Name",
     "issueDesc": "Issue Description",
-    "depositPaid": "Deposit Paid",
-    "estCost": "Total Cost",
+    "depositPaid": "Deposit Paid (DZD)",
+    "estCost": "Total Cost (DZD)",
     "notes": "Additional Notes",
     "submit": "Save & Print"
   },
@@ -57,6 +64,23 @@
     "deposit": "Deposit",
     "estCost": "Cost",
     "profit": "Profit",
-    "actions": "Actions"
+    "actions": "Actions",
+    "print": "Print Receipt",
+    "markCompleted": "Mark Ready",
+    "noResults": "No Repairs Found",
+    "confirmDelete": "Are you sure you want to delete repair {{id}}? This action cannot be undone."
+  },
+  "receipt": {
+    "shopName": "MobiShop Chlef",
+    "phone": "Phone",
+    "customer": "Customer",
+    "device": "Device",
+    "issue": "Issue",
+    "estCost": "Est. Cost",
+    "deposit": "Deposit",
+    "remaining": "Remaining",
+    "notes": "Notes",
+    "thanks": "Thank you, please keep this receipt.",
+    "estCompletion": "Est. Completion: 3 Days"
   }
 }

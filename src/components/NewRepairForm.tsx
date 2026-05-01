@@ -22,7 +22,8 @@ const BRANDS = {
 
 export default function NewRepairForm() {
   const { t } = useTranslation();
-  const { fetchRepairs, fetchStats } = useAppStore();
+  const { fetchRepairs, fetchStats, setPrintingRepair } = useAppStore();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     customer_name: '',
     customer_phone: '',
@@ -38,14 +39,24 @@ export default function NewRepairForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     try {
       const finalBrand = formData.device_brand === 'Other' ? formData.custom_brand : formData.device_brand;
-      await invoke('add_repair', { 
-        ...formData,
-        device_brand: finalBrand,
-        depositPaid: Number(formData.deposit_paid),
-        estCost: Number(formData.est_cost)
+      
+      // BUG-02 FIX: Send only the exact fields the Rust backend expects
+      const repairId = await invoke<string>('add_repair', {
+        customer_name: formData.customer_name,
+        customer_phone: formData.customer_phone,
+        device_type: formData.device_type,
+        device_model: `${finalBrand} ${formData.device_model}`.trim(),
+        issue_desc: formData.issue_desc,
+        deposit_paid: Number(formData.deposit_paid),
+        est_cost: Number(formData.est_cost),
+        notes: formData.notes || null,
       });
+
+      // Reset form
       setFormData({
         customer_name: '',
         customer_phone: '',
@@ -58,10 +69,21 @@ export default function NewRepairForm() {
         est_cost: 0,
         notes: ''
       });
-      fetchRepairs();
-      fetchStats();
+
+      // Refresh data
+      await fetchRepairs();
+      await fetchStats();
+
+      // Auto-print the new repair
+      const repairs = useAppStore.getState().repairs;
+      const newRepair = repairs.find(r => r.repair_id === repairId);
+      if (newRepair) {
+        setPrintingRepair(newRepair);
+      }
     } catch (err) {
-      console.error(err);
+      console.error('Failed to add repair:', err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -148,7 +170,7 @@ export default function NewRepairForm() {
              <div className="animate-in slide-in-from-top-2 duration-200">
                <FormInput 
                 icon={<Plus size={16} />}
-                placeholder="Enter Brand Name"
+                placeholder={t('form.enterBrand')}
                 value={formData.custom_brand}
                 onChange={(v: string) => setFormData({...formData, custom_brand: v})}
                 required
@@ -169,7 +191,7 @@ export default function NewRepairForm() {
               rows={3}
               className="w-full p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-primary outline-none transition-all resize-none"
             />
-            <div className="absolute top-4 right-4 text-slate-300 dark:text-slate-600">
+            <div className="absolute top-4 end-4 text-slate-300 dark:text-slate-600">
               <Wrench size={18} />
             </div>
           </div>
@@ -202,9 +224,14 @@ export default function NewRepairForm() {
       <div className="p-8 bg-slate-50/50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800">
         <button
           type="submit"
-          className="w-full bg-primary text-white py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 flex items-center justify-center gap-3 active:scale-[0.98]"
+          disabled={isSubmitting}
+          className="w-full bg-primary text-white py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 flex items-center justify-center gap-3 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <Plus size={20} />
+          {isSubmitting ? (
+            <span className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></span>
+          ) : (
+            <Plus size={20} />
+          )}
           {t('form.submit')}
         </button>
       </div>
@@ -233,7 +260,7 @@ interface FormInputProps {
 function FormInput({ icon, placeholder, value, onChange, required, type = "text" }: FormInputProps) {
   return (
     <div className="relative group">
-      <div className="absolute inset-y-0 left-4 flex items-center text-slate-400 group-focus-within:text-primary transition-colors">
+      <div className="absolute inset-y-0 start-4 flex items-center text-slate-400 group-focus-within:text-primary transition-colors">
         {icon}
       </div>
       <input
@@ -242,7 +269,7 @@ function FormInput({ icon, placeholder, value, onChange, required, type = "text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
-        className="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-primary outline-none transition-all"
+        className="w-full ps-12 pe-4 py-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-primary outline-none transition-all"
       />
     </div>
   );

@@ -4,16 +4,19 @@
     "edit": "تعديل",
     "delete": "حذف",
     "cancel": "إلغاء",
-    "search": "بحث...",
+    "search": "بحث عن عميل أو جهاز...",
     "status": "الحالة",
     "date": "التاريخ",
     "settings": "الإعدادات",
-    "done": "تم",
-    "search_placeholder": "بحث عن عميل أو جهاز..."
+    "done": "تم"
   },
   "settings": {
     "receiptPrinter": "طابعة الإيصالات (80مم)",
-    "stickerPrinter": "طابعة الملصقات (Stickers)"
+    "stickerPrinter": "طابعة الملصقات (Stickers)",
+    "printerSetup": "إعداد الطابعات",
+    "systemConfig": "إعدادات النظام",
+    "refreshList": "تحديث القائمة",
+    "noPrinter": "-- لم يتم اختيار طابعة --"
   },
   "dashboard": {
     "title": "صيانة موبي شوب",
@@ -24,7 +27,9 @@
     "totalMonth": "إصلاحات الشهر",
     "revenue": "إجمالي الإيرادات",
     "netProfit": "صافي الربح",
-    "weeklyRevenue": "الإيرادات الأسبوعية"
+    "weeklyRevenue": "الإيرادات الأسبوعية",
+    "focusForm": "تكبير النموذج",
+    "showList": "إظهار القائمة"
   },
   "form": {
     "customerInfo": "معلومات العميل",
@@ -36,9 +41,10 @@
     "deviceType": "نوع الجهاز",
     "deviceBrand": "العلامة التجارية",
     "deviceModel": "موديل الجهاز",
+    "enterBrand": "أدخل اسم العلامة التجارية",
     "issueDesc": "وصف المشكلة بالتفصيل",
-    "depositPaid": "العربون المدفوع",
-    "estCost": "التكلفة الإجمالية",
+    "depositPaid": "العربون المدفوع (دج)",
+    "estCost": "التكلفة الإجمالية (دج)",
     "notes": "ملاحظات إضافية",
     "submit": "حفظ وطباعة الإيصال"
   },
@@ -58,6 +64,23 @@
     "deposit": "العربون",
     "estCost": "التكلفة",
     "profit": "الربح",
-    "actions": "إجراءات"
+    "actions": "إجراءات",
+    "print": "طباعة الإيصال",
+    "markCompleted": "تحديد كجاهز",
+    "noResults": "لا توجد إصلاحات",
+    "confirmDelete": "هل أنت متأكد من حذف الإصلاح {{id}}؟ لا يمكن التراجع عن هذا الإجراء."
+  },
+  "receipt": {
+    "shopName": "موبي شوب - الشلف",
+    "phone": "الهاتف",
+    "customer": "العميل",
+    "device": "الجهاز",
+    "issue": "المشكلة",
+    "estCost": "التكلفة التقديرية",
+    "deposit": "العربون المدفوع",
+    "remaining": "المبلغ المتبقي",
+    "notes": "ملاحظات",
+    "thanks": "شكراً لكم، يرجى الاحتفاظ بهذا الإيصال.",
+    "estCompletion": "مدة الإنجاز المتوقعة: 3 أيام"
   }
 }

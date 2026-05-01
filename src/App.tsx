@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppStore } from "./store";
 import Dashboard from "./components/Dashboard.tsx";
-import ReceiptPrint from "./components/ReceiptPrint.tsx";
+import Sidebar from "./components/Sidebar.tsx";
 import "./App.css";
 
 function App() {
@@ -18,9 +18,9 @@ function App() {
   }, [language, i18n, fetchSettings]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans">
+    <div className="min-h-screen bg-background text-foreground flex font-sans">
+      <Sidebar />
       <Dashboard />
-      <ReceiptPrint />
     </div>
   );
 }

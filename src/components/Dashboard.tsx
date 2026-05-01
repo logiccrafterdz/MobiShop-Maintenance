@@ -59,7 +59,7 @@ export default function Dashboard() {
       </header>
 
       {/* Dynamic Grid Layout */}
-      <div className={`flex-1 grid transition-all duration-500 ease-in-out gap-6 p-6 ${
+      <div className={`flex-1 grid transition-all duration-500 ease-in-out gap-6 p-6 overflow-hidden ${
         isFormOpen && isListOpen ? 'grid-cols-1 xl:grid-cols-[450px_1fr]' : 'grid-cols-1'
       }`}>
         
@@ -69,7 +69,7 @@ export default function Dashboard() {
         }`}>
           <div className="flex items-center justify-between mb-4 px-2">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-8 bg-primary rounded-full shadow-[0_0_15px_rgba(var(--primary),0.5)]"></div>
+              <div className="w-2 h-8 bg-primary rounded-full"></div>
               <h2 className="text-xl font-black tracking-tight uppercase text-slate-800 dark:text-white">
                 {t('dashboard.newRepair')}
               </h2>
@@ -79,7 +79,7 @@ export default function Dashboard() {
               className="hidden xl:flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-primary transition-colors"
             >
               {isListOpen ? <Maximize2 size={14} /> : <Minimize2 size={14} />}
-              {isListOpen ? 'Focus Form' : 'Show List'}
+              {isListOpen ? t('dashboard.focusForm') : t('dashboard.showList')}
             </button>
           </div>
           
@@ -94,7 +94,7 @@ export default function Dashboard() {
         }`}>
           <div className="flex items-center justify-between mb-4 px-2">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-8 bg-secondary rounded-full shadow-[0_0_15px_rgba(var(--secondary),0.5)]"></div>
+              <div className="w-2 h-8 bg-secondary rounded-full"></div>
               <h2 className="text-xl font-black tracking-tight uppercase text-slate-800 dark:text-white">
                 {t('dashboard.repairsList')}
               </h2>

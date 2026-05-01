@@ -35,7 +35,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               <h2 className="text-2xl font-black tracking-tight text-slate-800 dark:text-white leading-none">
                 {t('common.settings')}
               </h2>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">System Configuration</p>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{t('settings.systemConfig')}</p>
             </div>
           </div>
           <button 
@@ -49,13 +49,13 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         {/* Content */}
         <div className="p-8 space-y-8">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Printer Setup</h3>
+            <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">{t('settings.printerSetup')}</h3>
             <button 
               onClick={() => fetchPrinters()} 
               className="flex items-center gap-2 text-[10px] font-bold text-primary hover:text-primary/80 transition-colors uppercase"
             >
               <RefreshCw size={12} />
-              Refresh List
+              {t('settings.refreshList')}
             </button>
           </div>
 
@@ -65,6 +65,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               value={settings.receipt_printer || ''}
               onChange={(val: string) => updateSetting('receipt_printer', val)}
               printers={printers}
+              noSelectionText={t('settings.noPrinter')}
             />
 
             <PrinterSelector 
@@ -72,6 +73,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               value={settings.sticker_printer || ''}
               onChange={(val: string) => updateSetting('sticker_printer', val)}
               printers={printers}
+              noSelectionText={t('settings.noPrinter')}
             />
           </div>
         </div>
@@ -96,12 +98,13 @@ interface PrinterSelectorProps {
   value: string;
   onChange: (val: string) => void;
   printers: string[];
+  noSelectionText: string;
 }
 
-function PrinterSelector({ label, value, onChange, printers }: PrinterSelectorProps) {
+function PrinterSelector({ label, value, onChange, printers, noSelectionText }: PrinterSelectorProps) {
   return (
     <div className="space-y-3">
-      <label className="text-[11px] font-bold text-slate-500 uppercase tracking-tight ml-1">
+      <label className="text-[11px] font-bold text-slate-500 uppercase tracking-tight ms-1">
         {label}
       </label>
       <div className="relative">
@@ -110,20 +113,20 @@ function PrinterSelector({ label, value, onChange, printers }: PrinterSelectorPr
           onChange={(e) => onChange(e.target.value)}
           className="w-full px-5 py-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm font-bold focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer hover:border-primary/50 transition-all"
         >
-          <option value="">-- No Printer Selected --</option>
+          <option value="">{noSelectionText}</option>
           {printers.map((p: string) => (
             <option key={p} value={p}>{p}</option>
           ))}
         </select>
-        <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-slate-400">
-          <ChevronDown size={18} />
+        <div className="absolute inset-y-0 end-4 flex items-center pointer-events-none text-slate-400">
+          <DropdownArrow size={18} />
         </div>
       </div>
     </div>
   );
 }
 
-function ChevronDown({ size }: { size: number }) {
+function DropdownArrow({ size }: { size: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
       <path d="m6 9 6 6 6-6"/>

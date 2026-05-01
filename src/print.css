@@ -1,22 +1,32 @@
 @media print {
   @page {
     margin: 0;
-    size: 80mm auto; /* 80mm thermal paper */
+    size: 80mm auto;
   }
 
   body * {
-    visibility: hidden;
+    visibility: hidden !important;
   }
 
-  .print-only, .print-only * {
-    visibility: visible;
+  #receipt-content,
+  #receipt-content *,
+  #sticker-content,
+  #sticker-content * {
+    visibility: visible !important;
   }
 
-  .print-only {
+  #receipt-content {
     position: absolute;
     left: 0;
     top: 0;
     width: 80mm;
+  }
+
+  #sticker-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50mm;
   }
 }
 
